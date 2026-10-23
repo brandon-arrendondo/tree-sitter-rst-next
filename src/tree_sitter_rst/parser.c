@@ -355,6 +355,15 @@ bool parse_char_bullet(RSTScanner* scanner)
 
   int32_t bullet = scanner->lookahead;
   scanner->advance(scanner);
+  return parse_inner_char_bullet(scanner, bullet);
+}
+
+/// Parse the rest of a bullet list item, or an option list item, after its
+/// first character, `bullet`, has been consumed.
+static bool parse_inner_char_bullet(RSTScanner* scanner, int32_t bullet)
+{
+  const bool* valid_symbols = scanner->valid_symbols;
+
   bool ok = parse_inner_list_element(scanner, 1, T_CHAR_BULLET);
   if (ok) {
     return true;
@@ -1283,9 +1292,20 @@ static bool parse_attribution_mark(RSTScanner* scanner)
       scanner->advance(scanner);
     }
 
-    if (consumed_chars < 2 || consumed_chars > 3) {
-      return false;
+    if (consumed_chars >= 2 && consumed_chars <= 3
+        && parse_inner_list_element(scanner, consumed_chars, T_ATTRIBUTION_MARK)) {
+      return true;
     }
+
+    // Not an attribution. A block quote may also start with a bullet list
+    // ("- item") or an option list ("-a" or "--long").
+    if (consumed_chars == 1 && valid_symbols[T_CHAR_BULLET]) {
+      return parse_inner_char_bullet(scanner, '-');
+    }
+    if (consumed_chars <= 2 && parse_option_mark(scanner, '-', consumed_chars)) {
+      return true;
+    }
+    return parse_text(scanner, true);
   } else {
     scanner->advance(scanner);
     consumed_chars++;

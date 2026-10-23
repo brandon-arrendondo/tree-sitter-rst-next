@@ -768,6 +768,58 @@ This is a great quote
       (strong))))
 
 ================================================================================
+Block quotes starting with a hyphen
+================================================================================
+
+Lists in block quotes:
+
+    - A
+    - B
+
+..
+
+    -a        An option.
+    --long    A long option.
+
+..
+
+    -- An attribution alone
+
+..
+
+    ---- Text
+
+--------------------------------------------------------------------------------
+
+(document
+  (paragraph)
+  (block_quote
+    (bullet_list
+      (list_item
+        (body
+          (paragraph)))
+      (list_item
+        (body
+          (paragraph)))))
+  (comment)
+  (block_quote
+    (option_list
+      (list_item
+        (option_group)
+        (description
+          (paragraph)))
+      (list_item
+        (option_group)
+        (description
+          (paragraph)))))
+  (comment)
+  (block_quote
+    (attribution))
+  (comment)
+  (block_quote
+    (paragraph)))
+
+================================================================================
 Doctest blocks
 ================================================================================
 

@@ -21,6 +21,7 @@ static bool parse_underline(RSTScanner* scanner);
 static bool fallback_adornment(RSTScanner* scanner, int32_t adornment, int adornment_length);
 
 static bool parse_char_bullet(RSTScanner* scanner);
+static bool parse_inner_char_bullet(RSTScanner* scanner, int32_t bullet);
 static bool parse_numeric_bullet(RSTScanner* scanner);
 static bool parse_inner_numeric_bullet(RSTScanner* scanner, bool parenthesized);
 static bool parse_explict_markup_start(RSTScanner* scanner);
