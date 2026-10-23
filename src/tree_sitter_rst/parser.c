@@ -39,6 +39,10 @@ static bool parse_indent(RSTScanner* scanner)
     scanner->skip(scanner);
   }
 
+  if (!newlines && scanner->lookahead == ':' && valid_symbols[T_CLASSIFIER_MARK]) {
+    return parse_classifier_mark(scanner);
+  }
+
   int current_indent = scanner->back(scanner);
   if (indent > current_indent && valid_symbols[T_INDENT] && (newlines || at_line_start)) {
     scanner->push(scanner, indent);
@@ -573,6 +577,46 @@ static bool parse_inner_list_element(RSTScanner* scanner, int consumed_chars, en
   return false;
 }
 
+/// Parse the ` : ` separator between a definition list term and a classifier.
+///
+/// Called from `parse_indent` with the whitespace before the `:` consumed.
+/// A term is a single line followed directly by its indented definition, so
+/// the separator is only emitted when the next line is indented past the
+/// current level. Otherwise ` : ` is ordinary text (e.g. `Foo : bar`).
+static bool parse_classifier_mark(RSTScanner* scanner)
+{
+  TSLexer* lexer = scanner->lexer;
+
+  scanner->advance(scanner);
+  if (!is_space(scanner->lookahead) || is_newline(scanner->lookahead)) {
+    return false;
+  }
+  get_indent_level(scanner);
+  lexer->mark_end(lexer);
+
+  // The classifier itself can't be empty.
+  if (is_newline(scanner->lookahead)) {
+    return false;
+  }
+
+  // Go to the next line.
+  while (!is_newline(scanner->lookahead)) {
+    scanner->advance(scanner);
+  }
+  if (scanner->lookahead == CHAR_EOF) {
+    return false;
+  }
+  scanner->advance(scanner);
+
+  int indent = get_indent_level(scanner);
+  if (is_newline(scanner->lookahead) || indent <= scanner->back(scanner)) {
+    return false;
+  }
+
+  lexer->result_symbol = T_CLASSIFIER_MARK;
+  return true;
+}
+
 static bool parse_field_mark(RSTScanner* scanner)
 {
   const bool* valid_symbols = scanner->valid_symbols;
@@ -1101,9 +1145,13 @@ static bool parse_innner_literal_block_mark(RSTScanner* scanner)
   const bool* valid_symbols = scanner->valid_symbols;
   TSLexer* lexer = scanner->lexer;
 
-  if (!is_space(scanner->lookahead)
-      || !(valid_symbols[T_LITERAL_INDENTED_BLOCK_MARK] || valid_symbols[T_LITERAL_QUOTED_BLOCK_MARK])) {
+  if (!(valid_symbols[T_LITERAL_INDENTED_BLOCK_MARK] || valid_symbols[T_LITERAL_QUOTED_BLOCK_MARK])) {
     return false;
+  }
+
+  // `::` followed by something other than whitespace (e.g. `("::")`) is text.
+  if (!is_space(scanner->lookahead)) {
+    return parse_text(scanner, false);
   }
 
   lexer->mark_end(lexer);
@@ -1122,7 +1170,7 @@ static bool parse_innner_literal_block_mark(RSTScanner* scanner)
   // Make sure there is blank line
   while (!is_newline(scanner->lookahead)) {
     if (!is_space(scanner->lookahead)) {
-      return false;
+      return parse_literal_block_mark_as_text(scanner);
     }
     scanner->advance(scanner);
   }
@@ -1142,17 +1190,30 @@ static bool parse_innner_literal_block_mark(RSTScanner* scanner)
 
   // Literal blocks need to be indented, and quoted literal blocks
   // need to start with an adornment at the same indentation level.
-  if (indent > scanner->back(scanner)) {
+  if (indent > scanner->back(scanner) && valid_symbols[T_LITERAL_INDENTED_BLOCK_MARK]) {
     scanner->push(scanner, scanner->back(scanner) + 1);
     lexer->result_symbol = T_LITERAL_INDENTED_BLOCK_MARK;
-  } else if (indent == scanner->back(scanner) && is_adornment_char(scanner->lookahead)) {
+    return true;
+  }
+  if (indent == scanner->back(scanner)
+      && is_adornment_char(scanner->lookahead)
+      && valid_symbols[T_LITERAL_QUOTED_BLOCK_MARK]) {
     lexer->result_symbol = T_LITERAL_QUOTED_BLOCK_MARK;
-  } else {
+    return true;
+  }
+  return parse_literal_block_mark_as_text(scanner);
+}
+
+/// Emit a `::` that doesn't start a literal block as text.
+///
+/// `mark_end` has been called right after the `::`, so the text token ends
+/// there even though the lookahead has moved on.
+static bool parse_literal_block_mark_as_text(RSTScanner* scanner)
+{
+  if (!scanner->valid_symbols[T_TEXT]) {
     return false;
   }
-  if (!valid_symbols[lexer->result_symbol]) {
-    return false;
-  }
+  scanner->lexer->result_symbol = T_TEXT;
   return true;
 }
 

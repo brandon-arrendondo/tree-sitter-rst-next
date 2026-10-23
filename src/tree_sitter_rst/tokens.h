@@ -16,6 +16,9 @@ enum TokenType {
   // Transitions
   T_TRANSITION,
 
+  // Definition lists
+  T_CLASSIFIER_MARK,
+
   // Lists
   T_CHAR_BULLET,
   T_NUMERIC_BULLET,

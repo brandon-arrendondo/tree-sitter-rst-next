@@ -29,6 +29,9 @@ module.exports = grammar({
     // Transitions
     $.transition,
 
+    // Definition lists
+    $._classifier_mark,
+
     // Lists
     $._char_bullet,
     $._numeric_bullet,
@@ -289,7 +292,7 @@ module.exports = grammar({
 
     _classifiers: $ => repeat1(
       seq(
-        alias(token(seq(repeat1(WHITE_SPACE), ':', repeat1(WHITE_SPACE))), ':'),
+        alias($._classifier_mark, ':'),
         alias(repeat1($._inline_markup), $.classifier),
       ),
     ),

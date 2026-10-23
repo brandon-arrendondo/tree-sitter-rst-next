@@ -21,7 +21,6 @@ Check the playground at <https://stsewd.dev/tree-sitter-rst/>.
   recognition inside block quotes
 - Add some nodes to inline?
 - Check if there is a way to re-implement some nodes to JS instead of C?
-- A definition list with classifiers can't be separated by a blank line.
 - tests, tests, and more tests!
 
 ## Design notes
