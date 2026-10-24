@@ -772,8 +772,9 @@ static bool parse_field_mark_end(RSTScanner* scanner)
 /// Short options (`-`, `+`, `/`) take a single alphanumeric name character;
 /// long options (`--`) take a run of alphanumerics, hyphens and underscores.
 /// Returns false if no valid option name follows the prefix.
-static bool parse_inner_option(RSTScanner* scanner, bool long_option)
+static bool parse_inner_option(RSTScanner* scanner, bool long_option, int* spaces)
 {
+  *spaces = 0;
   if (!is_alphanumeric(scanner->lookahead)) {
     return false;
   }
@@ -792,6 +793,32 @@ static bool parse_inner_option(RSTScanner* scanner, bool long_option)
     scanner->advance(scanner);
     while (!is_space(scanner->lookahead) && scanner->lookahead != ',') {
       scanner->advance(scanner);
+    }
+    return true;
+  }
+
+  // Optional ` argument` after one space: a word (`FILE`) or `<anything>`.
+  // A space not followed by an argument is counted in `spaces`, as part of
+  // the separation before the description.
+  if (scanner->lookahead == ' ') {
+    scanner->advance(scanner);
+    if (scanner->lookahead == '<') {
+      scanner->advance(scanner);
+      while (scanner->lookahead != '>') {
+        if (is_newline(scanner->lookahead) || scanner->lookahead == '<') {
+          return false;
+        }
+        scanner->advance(scanner);
+      }
+      scanner->advance(scanner);
+    } else if (is_abc(scanner->lookahead)) {
+      while (is_alphanumeric(scanner->lookahead)
+          || scanner->lookahead == '-'
+          || scanner->lookahead == '_') {
+        scanner->advance(scanner);
+      }
+    } else {
+      *spaces = 1;
     }
   }
 
@@ -827,12 +854,13 @@ static bool parse_option_mark(RSTScanner* scanner, int32_t prefix, int prefix_le
     return false;
   }
 
-  if (!parse_inner_option(scanner, long_option)) {
+  int spaces_before = 0;
+  if (!parse_inner_option(scanner, long_option, &spaces_before)) {
     return false;
   }
 
   // Additional options in the same group, separated by `, `.
-  while (scanner->lookahead == ',') {
+  while (spaces_before == 0 && scanner->lookahead == ',') {
     scanner->advance(scanner);
     if (scanner->lookahead != ' ') {
       return false;
@@ -849,18 +877,18 @@ static bool parse_option_mark(RSTScanner* scanner, int32_t prefix, int prefix_le
       scanner->advance(scanner);
       next_long = true;
     }
-    if (!parse_inner_option(scanner, next_long)) {
+    if (!parse_inner_option(scanner, next_long, &spaces_before)) {
       return false;
     }
   }
 
   // The option group must be followed by whitespace.
-  if (!is_space(scanner->lookahead)) {
+  if (spaces_before == 0 && !is_space(scanner->lookahead)) {
     return false;
   }
   lexer->mark_end(lexer);
 
-  int spaces = get_indent_level(scanner);
+  int spaces = spaces_before + get_indent_level(scanner);
   bool same_line = !is_newline(scanner->lookahead);
   if (same_line) {
     // Same-line description: require at least two spaces of separation,

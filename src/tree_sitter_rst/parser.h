@@ -33,7 +33,7 @@ static bool parse_field_mark(RSTScanner* scanner);
 static bool parse_field_mark_end(RSTScanner* scanner);
 static bool parse_inner_field_mark(RSTScanner* scanner);
 static bool parse_option_mark(RSTScanner* scanner, int32_t prefix, int prefix_length);
-static bool parse_inner_option(RSTScanner* scanner, bool long_option);
+static bool parse_inner_option(RSTScanner* scanner, bool long_option, int* spaces);
 
 static bool parse_literal_block_mark(RSTScanner* scanner);
 static bool parse_innner_literal_block_mark(RSTScanner* scanner);

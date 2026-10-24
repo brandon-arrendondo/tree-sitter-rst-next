@@ -39,6 +39,29 @@ Option with an argument
         (paragraph)))))
 
 ============
+Options with a space-delimited argument
+============
+
+-i FILE        A word argument.
+-l <loops>     An angle-bracket argument.
+
+-a word more words is a paragraph.
+
+---
+
+(document
+  (option_list
+    (list_item
+      (option_group)
+      (description
+        (paragraph)))
+    (list_item
+      (option_group)
+      (description
+        (paragraph))))
+  (paragraph))
+
+============
 Option groups
 ============
 
