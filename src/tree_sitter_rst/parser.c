@@ -408,6 +408,25 @@ static bool parse_numeric_bullet(RSTScanner* scanner)
   return false;
 }
 
+/// Whether the rest of the line starts with an enumerator: `1.`, `(a)`,
+/// `#)` and the like, followed by whitespace. Consumes what it reads.
+static bool starts_with_enumerator(RSTScanner* scanner)
+{
+  if (scanner->lookahead == '(') {
+    scanner->advance(scanner);
+  }
+  int length = 0;
+  while (is_alphanumeric(scanner->lookahead) || scanner->lookahead == '#') {
+    scanner->advance(scanner);
+    length++;
+  }
+  if (length == 0 || (scanner->lookahead != '.' && scanner->lookahead != ')')) {
+    return false;
+  }
+  scanner->advance(scanner);
+  return is_space(scanner->lookahead);
+}
+
 static bool parse_inner_numeric_bullet(RSTScanner* scanner, bool parenthesized)
 {
   const bool* valid_symbols = scanner->valid_symbols;
@@ -557,6 +576,25 @@ static bool parse_inner_list_element(RSTScanner* scanner, int consumed_chars, en
         scanner->advance(scanner);
       }
       scanner->advance(scanner);
+
+      // An enumerator starts a list item only if the next line is blank,
+      // indented past the item's block, outside that block, or starts with
+      // another enumerator (docutils' `is_enumerated_list_item`, which wants
+      // the next ordinal; any enumerator is accepted here). Otherwise the
+      // enumerator is ordinary paragraph text ("1. text\ntext").
+      int32_t first = scanner->lookahead;
+      if (!is_newline(first)) {
+        int next_indent = get_indent_level(scanner);
+        if (!is_newline(scanner->lookahead) && next_indent == scanner->back(scanner)
+            && !(next_indent == 0 && is_adornment_char(first))
+            && !starts_with_enumerator(scanner)) {
+          return parse_text(scanner, false);
+        }
+        if (next_indent > 0) {
+          scanner->push(scanner, indent);
+          return true;
+        }
+      }
 
       // Check if that line is a valid underline.
       int32_t adornment = scanner->lookahead;

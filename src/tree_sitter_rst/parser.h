@@ -23,6 +23,7 @@ static bool fallback_adornment(RSTScanner* scanner, int32_t adornment, int adorn
 static bool parse_char_bullet(RSTScanner* scanner);
 static bool parse_inner_char_bullet(RSTScanner* scanner, int32_t bullet);
 static bool parse_numeric_bullet(RSTScanner* scanner);
+static bool starts_with_enumerator(RSTScanner* scanner);
 static bool parse_inner_numeric_bullet(RSTScanner* scanner, bool parenthesized);
 static bool parse_explict_markup_start(RSTScanner* scanner);
 static bool parse_inner_list_element(RSTScanner* scanner, int consumed_chars, enum TokenType token_type);

@@ -183,6 +183,46 @@ Z. Six
       (body
         (paragraph)))))
 
+
+================================================================================
+An enumerator before an unindented line is text
+================================================================================
+
+1. Start the thread with an interval of 400 us (double of expected
+application thread):
+
+Quote:
+
+   2. text
+   more text
+
+   3. a
+   4. b
+
+1. a
+#. b
+
+--------------------------------------------------------------------------------
+
+(document
+  (paragraph)
+  (paragraph)
+  (block_quote
+    (paragraph)
+    (enumerated_list
+      (list_item
+        (body
+          (paragraph)))
+      (list_item
+        (body
+          (paragraph)))))
+  (enumerated_list
+    (list_item
+      (body
+        (paragraph)))
+    (list_item
+      (body
+        (paragraph)))))
 ================================================================================
 Definition lists
 ================================================================================
