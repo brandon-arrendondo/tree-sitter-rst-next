@@ -105,7 +105,7 @@ jobs:
       - name: Set up tree-sitter
         uses: tree-sitter/setup-action/cli@eeb902ac2f1be576edc296309872cf476a209b7f # v2
       - name: Run tests
-        uses: tree-sitter/parser-test-action@v2
+        uses: tree-sitter/parser-test-action@aba4a3de737f86f8ce83be38166a1ab521d4c960 # v2
         with:
           generate: false # for now.
           test-rust: true
@@ -153,7 +153,7 @@ jobs:
       - name: Set up tree-sitter
         uses: tree-sitter/setup-action/cli@eeb902ac2f1be576edc296309872cf476a209b7f # v2
       - name: Run tests
-        uses: tree-sitter/parser-test-action@v2
+        uses: tree-sitter/parser-test-action@aba4a3de737f86f8ce83be38166a1ab521d4c960 # v2
         with:
           generate: false
           test-rust: true
@@ -172,7 +172,7 @@ jobs:
       - name: Set up tree-sitter
         uses: tree-sitter/setup-action/cli@eeb902ac2f1be576edc296309872cf476a209b7f # v2
       - name: Run tests
-        uses: tree-sitter/parser-test-action@v2
+        uses: tree-sitter/parser-test-action@aba4a3de737f86f8ce83be38166a1ab521d4c960 # v2
         with:
           generate: false
           test-rust: true
