@@ -1,0 +1,552 @@
+# aurora-lint findings accepted when the gate was adopted.
+#
+# Every entry was present in the scanner as inherited from the upstream
+# project and has NOT yet been reviewed: the gate ratchets from here, so a
+# new finding fails while these are fixed or justified one by one. An entry
+# lapses when its line changes (the hash covers the line); when it does,
+# fix the finding or review it and write a real justification. Remove an
+# entry once its finding is fixed.
+
+[[suppress]]
+name = "scanner-c-6-dcl15-c"
+tool = "aurora-lint"
+file = "src/scanner.c"
+rule = "DCL15-C"
+hash = "c897e77bbfd43fdd"
+justification = "Baselined at adoption, not yet reviewed (Low): Function 'tree_sitter_rst_external_scanner_create' should be declared static if it doesn't need external linkage"
+
+[[suppress]]
+name = "scanner-c-11-api00-c"
+tool = "aurora-lint"
+file = "src/scanner.c"
+rule = "API00-C"
+hash = "1fcdf2c52c01b9b2"
+justification = "Baselined at adoption, not yet reviewed (Medium): Function 'tree_sitter_rst_external_scanner_destroy' does not validate pointer parameter 'payload' before use"
+
+[[suppress]]
+name = "scanner-c-11-dcl15-c"
+tool = "aurora-lint"
+file = "src/scanner.c"
+rule = "DCL15-C"
+hash = "c89ba16cda37f5f8"
+justification = "Baselined at adoption, not yet reviewed (Low): Function 'tree_sitter_rst_external_scanner_destroy' should be declared static if it doesn't need external linkage"
+
+[[suppress]]
+name = "scanner-c-11-dcl40-c"
+tool = "aurora-lint"
+file = "src/scanner.c"
+rule = "DCL40-C"
+hash = "d341d107718db704"
+justification = "Baselined at adoption, not yet reviewed (High): Identifier 'tree_sitter_rst_external_scanner_destroy' agrees with 'tree_sitter_rst_external_scanner_create' in its first 31 significant characters; th"
+
+[[suppress]]
+name = "scanner-c-16-api00-c"
+tool = "aurora-lint"
+file = "src/scanner.c"
+rule = "API00-C"
+hash = "26cce5d307cb124d"
+justification = "Baselined at adoption, not yet reviewed (Medium): Function 'tree_sitter_rst_external_scanner_serialize' does not validate pointer parameter 'buffer' before use"
+
+[[suppress]]
+name = "scanner-c-16-dcl15-c"
+tool = "aurora-lint"
+file = "src/scanner.c"
+rule = "DCL15-C"
+hash = "fa2c280d6591d916"
+justification = "Baselined at adoption, not yet reviewed (Low): Function 'tree_sitter_rst_external_scanner_serialize' should be declared static if it doesn't need external linkage"
+
+[[suppress]]
+name = "scanner-c-16-dcl40-c"
+tool = "aurora-lint"
+file = "src/scanner.c"
+rule = "DCL40-C"
+hash = "267dd79bdaa37d8e"
+justification = "Baselined at adoption, not yet reviewed (High): Identifier 'tree_sitter_rst_external_scanner_serialize' agrees with 'tree_sitter_rst_external_scanner_create' in its first 31 significant characters; "
+
+[[suppress]]
+name = "scanner-c-25-api00-c"
+tool = "aurora-lint"
+file = "src/scanner.c"
+rule = "API00-C"
+hash = "9f4a66d5f36950f6"
+justification = "Baselined at adoption, not yet reviewed (Medium): Function 'tree_sitter_rst_external_scanner_deserialize' does not validate pointer parameter 'buffer' before use"
+
+[[suppress]]
+name = "scanner-c-25-dcl15-c"
+tool = "aurora-lint"
+file = "src/scanner.c"
+rule = "DCL15-C"
+hash = "37dd6eaac7df50c9"
+justification = "Baselined at adoption, not yet reviewed (Low): Function 'tree_sitter_rst_external_scanner_deserialize' should be declared static if it doesn't need external linkage"
+
+[[suppress]]
+name = "scanner-c-25-dcl40-c"
+tool = "aurora-lint"
+file = "src/scanner.c"
+rule = "DCL40-C"
+hash = "c0b42a5276748682"
+justification = "Baselined at adoption, not yet reviewed (High): Identifier 'tree_sitter_rst_external_scanner_deserialize' agrees with 'tree_sitter_rst_external_scanner_create' in its first 31 significant characters"
+
+[[suppress]]
+name = "scanner-c-28-int01-c"
+tool = "aurora-lint"
+file = "src/scanner.c"
+rule = "INT01-C"
+hash = "4452a5a760856f46"
+justification = "Baselined at adoption, not yet reviewed (Medium): Parameter 'unsigned length' appears to represent a size but doesn't use size_t"
+
+[[suppress]]
+name = "scanner-c-35-api00-c"
+tool = "aurora-lint"
+file = "src/scanner.c"
+rule = "API00-C"
+hash = "275adda25fa9b15d"
+justification = "Baselined at adoption, not yet reviewed (Medium): Function 'tree_sitter_rst_external_scanner_scan' does not validate pointer parameter 'lexer' before use"
+
+[[suppress]]
+name = "scanner-c-35-dcl15-c"
+tool = "aurora-lint"
+file = "src/scanner.c"
+rule = "DCL15-C"
+hash = "975b847672c4ce49"
+justification = "Baselined at adoption, not yet reviewed (Low): Function 'tree_sitter_rst_external_scanner_scan' should be declared static if it doesn't need external linkage"
+
+[[suppress]]
+name = "scanner-c-35-dcl40-c"
+tool = "aurora-lint"
+file = "src/scanner.c"
+rule = "DCL40-C"
+hash = "b2b7b379eb845c04"
+justification = "Baselined at adoption, not yet reviewed (High): Identifier 'tree_sitter_rst_external_scanner_scan' agrees with 'tree_sitter_rst_external_scanner_create' in its first 31 significant characters; they "
+
+[[suppress]]
+name = "chars-c-284-msc13-c"
+tool = "aurora-lint"
+file = "src/tree_sitter_rst/chars.c"
+rule = "MSC13-C"
+hash = "208a6aa70f95aa34"
+justification = "Baselined at adoption, not yet reviewed (Low): Value assigned to 'current' is never read on any execution path before being overwritten or the function returning."
+
+[[suppress]]
+name = "chars-c-304-int01-c"
+tool = "aurora-lint"
+file = "src/tree_sitter_rst/chars.c"
+rule = "INT01-C"
+hash = "35d337e9be52ff50"
+justification = "Baselined at adoption, not yet reviewed (Medium): Parameter 'unsigned string_len' appears to represent a size but doesn't use size_t"
+
+[[suppress]]
+name = "chars-h-46-int01-c"
+tool = "aurora-lint"
+file = "src/tree_sitter_rst/chars.h"
+rule = "INT01-C"
+hash = "a03a77b8d4f3a4d6"
+justification = "Baselined at adoption, not yet reviewed (Medium): Parameter 'unsigned string_len' appears to represent a size but doesn't use size_t"
+
+[[suppress]]
+name = "parser-c-236-int01-c"
+tool = "aurora-lint"
+file = "src/tree_sitter_rst/parser.c"
+rule = "INT01-C"
+hash = "e01fa97b7852445a"
+justification = "Baselined at adoption, not yet reviewed (Medium): Parameter 'int adornment_length' appears to represent a size but doesn't use size_t"
+
+[[suppress]]
+name = "parser-c-249-msc01-c"
+tool = "aurora-lint"
+file = "src/tree_sitter_rst/parser.c"
+rule = "MSC01-C"
+hash = "bcbe008db0cb2fc0"
+justification = "Baselined at adoption, not yet reviewed (Medium): if / else-if chain has no final else clause -- the case where none of the conditions hold is unhandled"
+
+[[suppress]]
+name = "parser-c-306-msc01-c"
+tool = "aurora-lint"
+file = "src/tree_sitter_rst/parser.c"
+rule = "MSC01-C"
+hash = "c0a429161fceeb4a"
+justification = "Baselined at adoption, not yet reviewed (Medium): if / else-if chain has no final else clause -- the case where none of the conditions hold is unhandled"
+
+[[suppress]]
+name = "parser-c-357-api00-c"
+tool = "aurora-lint"
+file = "src/tree_sitter_rst/parser.c"
+rule = "API00-C"
+hash = "ff982f9bea34976a"
+justification = "Baselined at adoption, not yet reviewed (Medium): Function 'parse_char_bullet' does not validate pointer parameter 'scanner' before use"
+
+[[suppress]]
+name = "parser-c-357-dcl15-c"
+tool = "aurora-lint"
+file = "src/tree_sitter_rst/parser.c"
+rule = "DCL15-C"
+hash = "b92768f43c8950a0"
+justification = "Baselined at adoption, not yet reviewed (Low): Function 'parse_char_bullet' should be declared static if it doesn't need external linkage"
+
+[[suppress]]
+name = "parser-c-543-exp10-c"
+tool = "aurora-lint"
+file = "src/tree_sitter_rst/parser.c"
+rule = "EXP10-C"
+hash = "002c4f351d1ff7e9"
+justification = "Baselined at adoption, not yet reviewed (Medium): Expression contains 2 function calls with potentially unsequenced side effects. Order of evaluation is unspecified."
+
+[[suppress]]
+name = "parser-c-543-int32-c"
+tool = "aurora-lint"
+file = "src/tree_sitter_rst/parser.c"
+rule = "INT32-C"
+hash = "bb528544cf42f652"
+justification = "Baselined at adoption, not yet reviewed (High): Signed integer addition 'scanner->back(scanner) + consumed_chars + get_indent_level(scanner)' may overflow without proper checking"
+
+[[suppress]]
+name = "parser-c-582-msc01-c"
+tool = "aurora-lint"
+file = "src/tree_sitter_rst/parser.c"
+rule = "MSC01-C"
+hash = "83bc590760b83eaa"
+justification = "Baselined at adoption, not yet reviewed (Medium): if / else-if chain has no final else clause -- the case where none of the conditions hold is unhandled"
+
+[[suppress]]
+name = "parser-c-591-int32-c"
+tool = "aurora-lint"
+file = "src/tree_sitter_rst/parser.c"
+rule = "INT32-C"
+hash = "ed90169ca4b21824"
+justification = "Baselined at adoption, not yet reviewed (High): Signed integer increment 'consumed_chars++' may overflow at INT_MAX"
+
+[[suppress]]
+name = "parser-c-859-int01-c"
+tool = "aurora-lint"
+file = "src/tree_sitter_rst/parser.c"
+rule = "INT01-C"
+hash = "741de9ade0fbbd7e"
+justification = "Baselined at adoption, not yet reviewed (Medium): Parameter 'int prefix_length' appears to represent a size but doesn't use size_t"
+
+[[suppress]]
+name = "parser-c-977-msc01-c"
+tool = "aurora-lint"
+file = "src/tree_sitter_rst/parser.c"
+rule = "MSC01-C"
+hash = "78e4ede31d1d00e5"
+justification = "Baselined at adoption, not yet reviewed (Medium): if / else-if chain has no final else clause -- the case where none of the conditions hold is unhandled"
+
+[[suppress]]
+name = "parser-c-1013-msc01-c"
+tool = "aurora-lint"
+file = "src/tree_sitter_rst/parser.c"
+rule = "MSC01-C"
+hash = "e91c8ce3cf2b98a6"
+justification = "Baselined at adoption, not yet reviewed (Medium): if / else-if chain has no final else clause -- the case where none of the conditions hold is unhandled"
+
+[[suppress]]
+name = "parser-c-1358-msc12-c"
+tool = "aurora-lint"
+file = "src/tree_sitter_rst/parser.c"
+rule = "MSC12-C"
+hash = "bc6943012e39ba04"
+justification = "Baselined at adoption, not yet reviewed (Low): Condition 'scanner->lookahead != adornment' was already excluded by the preceding guard on line 1354, which returns when it holds. This branch is dead"
+
+[[suppress]]
+name = "parser-c-1472-msc01-c"
+tool = "aurora-lint"
+file = "src/tree_sitter_rst/parser.c"
+rule = "MSC01-C"
+hash = "2821123d86f90dbf"
+justification = "Baselined at adoption, not yet reviewed (Medium): if / else-if chain has no final else clause -- the case where none of the conditions hold is unhandled"
+
+[[suppress]]
+name = "parser-c-1521-msc01-c"
+tool = "aurora-lint"
+file = "src/tree_sitter_rst/parser.c"
+rule = "MSC01-C"
+hash = "8f8350926f230418"
+justification = "Baselined at adoption, not yet reviewed (Medium): if / else-if chain has no final else clause -- the case where none of the conditions hold is unhandled"
+
+[[suppress]]
+name = "parser-c-1733-err00-c"
+tool = "aurora-lint"
+file = "src/tree_sitter_rst/parser.c"
+rule = "ERR00-C"
+hash = "e7a8a008f317736e"
+justification = "Baselined at adoption, not yet reviewed (Medium): Return value from malloc() should be checked for errors"
+
+[[suppress]]
+name = "parser-c-1733-err33-c"
+tool = "aurora-lint"
+file = "src/tree_sitter_rst/parser.c"
+rule = "ERR33-C"
+hash = "b9d008ff9358d47e"
+justification = "Baselined at adoption, not yet reviewed (High): Return value of 'malloc' assigned to 'schema' but not checked for errors: 'malloc(sizeof(char) * MAX_SCHEMA_LEN)' - Returns NULL on allocation failure"
+
+[[suppress]]
+name = "parser-c-1733-mem02-c"
+tool = "aurora-lint"
+file = "src/tree_sitter_rst/parser.c"
+rule = "MEM02-C"
+hash = "0b746182979ff4f6"
+justification = "Baselined at adoption, not yet reviewed (Low): Memory allocation result not cast in initialization of 'schema'"
+
+[[suppress]]
+name = "parser-c-1737-arr30-c"
+tool = "aurora-lint"
+file = "src/tree_sitter_rst/parser.c"
+rule = "ARR30-C"
+hash = "10b6673d35167942"
+justification = "Baselined at adoption, not yet reviewed (High): Potentially unsafe array access with expression 'consumed_chars++': Buffer 'schema' with dynamic size (sizeof(char) * MAX_SCHEMA_LEN) (allocated at li"
+
+[[suppress]]
+name = "parser-c-1737-exp34-c"
+tool = "aurora-lint"
+file = "src/tree_sitter_rst/parser.c"
+rule = "EXP34-C"
+hash = "37a828a6630760aa"
+justification = "Baselined at adoption, not yet reviewed (High): Potential null pointer dereference in array access of variable 'schema'"
+
+[[suppress]]
+name = "parser-c-1743-arr30-c"
+tool = "aurora-lint"
+file = "src/tree_sitter_rst/parser.c"
+rule = "ARR30-C"
+hash = "7e4e6f5f822c9086"
+justification = "Baselined at adoption, not yet reviewed (High): Potentially unsafe array access with expression 'consumed_chars++': Buffer 'schema' with dynamic size (sizeof(char) * MAX_SCHEMA_LEN) (allocated at li"
+
+[[suppress]]
+name = "parser-c-1756-msc01-c"
+tool = "aurora-lint"
+file = "src/tree_sitter_rst/parser.c"
+rule = "MSC01-C"
+hash = "9eb494120d8a6d2c"
+justification = "Baselined at adoption, not yet reviewed (Medium): if / else-if chain has no final else clause -- the case where none of the conditions hold is unhandled"
+
+[[suppress]]
+name = "parser-c-1762-msc13-c"
+tool = "aurora-lint"
+file = "src/tree_sitter_rst/parser.c"
+rule = "MSC13-C"
+hash = "7ad0acf94f19f1db"
+justification = "Baselined at adoption, not yet reviewed (Low): Value assigned to 'schema' is never read on any execution path before being overwritten or the function returning."
+
+[[suppress]]
+name = "parser-c-1777-msc01-c"
+tool = "aurora-lint"
+file = "src/tree_sitter_rst/parser.c"
+rule = "MSC01-C"
+hash = "d89b3c50cd0a994a"
+justification = "Baselined at adoption, not yet reviewed (Medium): if / else-if chain has no final else clause -- the case where none of the conditions hold is unhandled"
+
+[[suppress]]
+name = "parser-h-7-pre02-c"
+tool = "aurora-lint"
+file = "src/tree_sitter_rst/parser.h"
+rule = "PRE02-C"
+hash = "f3846ca96942ec51"
+justification = "Baselined at adoption, not yet reviewed (Medium): Macro replacement list should be parenthesized to prevent operator precedence issues."
+
+[[suppress]]
+name = "parser-h-8-pre02-c"
+tool = "aurora-lint"
+file = "src/tree_sitter_rst/parser.h"
+rule = "PRE02-C"
+hash = "cd8663a4ac787ef2"
+justification = "Baselined at adoption, not yet reviewed (Medium): Macro replacement list should be parenthesized to prevent operator precedence issues."
+
+[[suppress]]
+name = "parser-h-9-pre02-c"
+tool = "aurora-lint"
+file = "src/tree_sitter_rst/parser.h"
+rule = "PRE02-C"
+hash = "9f64aa8ecff24270"
+justification = "Baselined at adoption, not yet reviewed (Medium): Macro replacement list should be parenthesized to prevent operator precedence issues."
+
+[[suppress]]
+name = "parser-h-10-pre02-c"
+tool = "aurora-lint"
+file = "src/tree_sitter_rst/parser.h"
+rule = "PRE02-C"
+hash = "abca4d8234469614"
+justification = "Baselined at adoption, not yet reviewed (Medium): Macro replacement list should be parenthesized to prevent operator precedence issues."
+
+[[suppress]]
+name = "parser-h-11-pre02-c"
+tool = "aurora-lint"
+file = "src/tree_sitter_rst/parser.h"
+rule = "PRE02-C"
+hash = "007ca2cc38eb6012"
+justification = "Baselined at adoption, not yet reviewed (Medium): Macro replacement list should be parenthesized to prevent operator precedence issues."
+
+[[suppress]]
+name = "parser-h-12-pre02-c"
+tool = "aurora-lint"
+file = "src/tree_sitter_rst/parser.h"
+rule = "PRE02-C"
+hash = "3a153bc4932d56eb"
+justification = "Baselined at adoption, not yet reviewed (Medium): Macro replacement list should be parenthesized to prevent operator precedence issues."
+
+[[suppress]]
+name = "parser-h-13-pre02-c"
+tool = "aurora-lint"
+file = "src/tree_sitter_rst/parser.h"
+rule = "PRE02-C"
+hash = "36f6a26b432bf6f8"
+justification = "Baselined at adoption, not yet reviewed (Medium): Macro replacement list should be parenthesized to prevent operator precedence issues."
+
+[[suppress]]
+name = "parser-h-14-pre02-c"
+tool = "aurora-lint"
+file = "src/tree_sitter_rst/parser.h"
+rule = "PRE02-C"
+hash = "53cc8ccac3502c06"
+justification = "Baselined at adoption, not yet reviewed (Medium): Macro replacement list should be parenthesized to prevent operator precedence issues."
+
+[[suppress]]
+name = "parser-h-15-pre02-c"
+tool = "aurora-lint"
+file = "src/tree_sitter_rst/parser.h"
+rule = "PRE02-C"
+hash = "c9049257d3abbc43"
+justification = "Baselined at adoption, not yet reviewed (Medium): Macro replacement list should be parenthesized to prevent operator precedence issues."
+
+[[suppress]]
+name = "parser-h-16-pre02-c"
+tool = "aurora-lint"
+file = "src/tree_sitter_rst/parser.h"
+rule = "PRE02-C"
+hash = "97e34c895ca94e66"
+justification = "Baselined at adoption, not yet reviewed (Medium): Macro replacement list should be parenthesized to prevent operator precedence issues."
+
+[[suppress]]
+name = "parser-h-21-int01-c"
+tool = "aurora-lint"
+file = "src/tree_sitter_rst/parser.h"
+rule = "INT01-C"
+hash = "174d19ecc78eb871"
+justification = "Baselined at adoption, not yet reviewed (Medium): Parameter 'int adornment_length' appears to represent a size but doesn't use size_t"
+
+[[suppress]]
+name = "parser-h-35-int01-c"
+tool = "aurora-lint"
+file = "src/tree_sitter_rst/parser.h"
+rule = "INT01-C"
+hash = "7d959ec570bf137e"
+justification = "Baselined at adoption, not yet reviewed (Medium): Parameter 'int prefix_length' appears to represent a size but doesn't use size_t"
+
+[[suppress]]
+name = "punctuation_chars-h-261-arr02-c"
+tool = "aurora-lint"
+file = "src/tree_sitter_rst/punctuation_chars.h"
+rule = "ARR02-C"
+hash = "8a4d023551fb68a4"
+justification = "Baselined at adoption, not yet reviewed (Medium): Array 'delim_chars_range[][2]' of size 2 has 48 initializers (excess elements)"
+
+[[suppress]]
+name = "scanner-c-15-err00-c"
+tool = "aurora-lint"
+file = "src/tree_sitter_rst/scanner.c"
+rule = "ERR00-C"
+hash = "3382a296dedb128f"
+justification = "Baselined at adoption, not yet reviewed (Medium): Return value from malloc() should be checked for errors"
+
+[[suppress]]
+name = "scanner-c-15-err33-c"
+tool = "aurora-lint"
+file = "src/tree_sitter_rst/scanner.c"
+rule = "ERR33-C"
+hash = "9baa02cdc123b690"
+justification = "Baselined at adoption, not yet reviewed (High): Return value of 'malloc' assigned to 'scanner' but not checked for errors: 'malloc(sizeof(RSTScanner))' - Returns NULL on allocation failure"
+
+[[suppress]]
+name = "scanner-c-15-mem02-c"
+tool = "aurora-lint"
+file = "src/tree_sitter_rst/scanner.c"
+rule = "MEM02-C"
+hash = "ec857b22855f4977"
+justification = "Baselined at adoption, not yet reviewed (Low): Memory allocation result not cast in initialization of 'scanner'"
+
+[[suppress]]
+name = "scanner-c-17-exp34-c"
+tool = "aurora-lint"
+file = "src/tree_sitter_rst/scanner.c"
+rule = "EXP34-C"
+hash = "114d2152d984d826"
+justification = "Baselined at adoption, not yet reviewed (High): Potential null pointer dereference in member access of variable 'scanner'"
+
+[[suppress]]
+name = "scanner-c-20-err00-c"
+tool = "aurora-lint"
+file = "src/tree_sitter_rst/scanner.c"
+rule = "ERR00-C"
+hash = "01dd9021a22153c8"
+justification = "Baselined at adoption, not yet reviewed (Medium): Return value from malloc() should be checked for errors"
+
+[[suppress]]
+name = "scanner-c-20-err33-c"
+tool = "aurora-lint"
+file = "src/tree_sitter_rst/scanner.c"
+rule = "ERR33-C"
+hash = "10211d838d6ac9d1"
+justification = "Baselined at adoption, not yet reviewed (High): Return value of 'malloc' assigned to 'scanner->indent_stack' but not checked for errors: 'malloc(sizeof(int) * RST_SCANNER_STACK_MAX_CAPACITY)' - Retu"
+
+[[suppress]]
+name = "scanner-c-20-mem02-c"
+tool = "aurora-lint"
+file = "src/tree_sitter_rst/scanner.c"
+rule = "MEM02-C"
+hash = "efbb26f2d3121e9b"
+justification = "Baselined at adoption, not yet reviewed (Low): Memory allocation result not cast; assign to 'scanner->indent_stack' without explicit cast"
+
+[[suppress]]
+name = "scanner-c-31-mem12-c"
+tool = "aurora-lint"
+file = "src/tree_sitter_rst/scanner.c"
+rule = "MEM12-C"
+hash = "7cd29e7c22f29d0b"
+justification = "Baselined at adoption, not yet reviewed (Low): Function returns without releasing all resources. Leaked: *scanner, scanner->indent_stack. Consider using goto chain for proper resource cleanup."
+
+[[suppress]]
+name = "scanner-c-86-dcl13-c"
+tool = "aurora-lint"
+file = "src/tree_sitter_rst/scanner.c"
+rule = "DCL13-C"
+hash = "5237e09e1e1b9e47"
+justification = "Baselined at adoption, not yet reviewed (Low): Pointer parameter 'scanner' is not modified and should be declared const"
+
+[[suppress]]
+name = "scanner-c-97-int01-c"
+tool = "aurora-lint"
+file = "src/tree_sitter_rst/scanner.c"
+rule = "INT01-C"
+hash = "02469ca4b0f870c0"
+justification = "Baselined at adoption, not yet reviewed (Medium): Parameter 'unsigned length' appears to represent a size but doesn't use size_t"
+
+[[suppress]]
+name = "scanner-h-34-int01-c"
+tool = "aurora-lint"
+file = "src/tree_sitter_rst/scanner.h"
+rule = "INT01-C"
+hash = "8810566fb501b0d3"
+justification = "Baselined at adoption, not yet reviewed (Medium): Parameter 'unsigned length' appears to represent a size but doesn't use size_t"
+
+[[suppress]]
+name = "scanner-h-38-dcl20-c"
+tool = "aurora-lint"
+file = "src/tree_sitter_rst/scanner.h"
+rule = "DCL20-C"
+hash = "02a26ae239dfe7f5"
+justification = "Baselined at adoption, not yet reviewed (Medium): Function has empty parameter list () - should explicitly specify (void) to indicate no arguments"
+
+[[suppress]]
+name = "scanner-h-48-api02-c"
+tool = "aurora-lint"
+file = "src/tree_sitter_rst/scanner.h"
+rule = "API02-C"
+hash = "ca84ce656bc332ae"
+justification = "Baselined at adoption, not yet reviewed (High): Function has pointer parameter without size argument: 'static unsigned rst_scanner_serialize(RSTScanner* scanner, char* buffer);' - Add size_t paramet"
+
+[[suppress]]
+name = "scanner-h-49-int01-c"
+tool = "aurora-lint"
+file = "src/tree_sitter_rst/scanner.h"
+rule = "INT01-C"
+hash = "e6eedb285c7ffe44"
+justification = "Baselined at adoption, not yet reviewed (Medium): Parameter 'unsigned length' appears to represent a size but doesn't use size_t"

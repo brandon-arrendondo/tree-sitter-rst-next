@@ -121,24 +121,16 @@ serve: all
 	npm run start
 
 format:
-	clang-format -i \
-	  --style="{BasedOnStyle: webkit, IndentWidth: 2, IndentCaseLabels: true}" \
-	  src/scanner.c \
-	  src/tree_sitter_rst/*
+	moldy --in-place src/scanner.c src/tree_sitter_rst/*
 
-# Lint targets — run all three with `make lint`
+# Lint targets — run both with `make lint`
 # clang-tidy uses --line-filter so only hand-written files are reported;
 # generated parser.c files are compiled for analysis but their diagnostics
 # are suppressed.
 CLANG_TIDY_LINE_FILTER := [{"name":"src/scanner.c"},{"name":"tree_sitter_rst/scanner.c"},{"name":"tree_sitter_rst/chars.c"},{"name":"tree_sitter_rst/table.c"}]
 
-lint: lint-format lint-tidy lint-cppcheck
-
-lint-format:
-	clang-format --dry-run --Werror \
-	  --style="{BasedOnStyle: webkit, IndentWidth: 2, IndentCaseLabels: true}" \
-	  src/scanner.c \
-	  src/tree_sitter_rst/*
+# moldy formats the scanner (see .pre-commit-config.yaml).
+lint: lint-tidy lint-cppcheck
 
 lint-tidy:
 	clang-tidy \
@@ -173,4 +165,4 @@ generate-bindings:
 wasm:
 	$(TS) build --wasm
 
-.PHONY: all install uninstall clean test release update-examples parse-examples serve format lint lint-format lint-tidy lint-cppcheck format-python check generate-bindings wasm
+.PHONY: all install uninstall clean test release update-examples parse-examples serve format lint lint-tidy lint-cppcheck format-python check generate-bindings wasm

@@ -1,0 +1,81 @@
+# Repository Guidelines
+
+## Shared agent guidelines
+
+This section is the same in every repository. Only the repository values below
+it differ. Change it in all repositories at once, or not at all.
+
+Before changing code, read the technical guide named in the repository values,
+and follow its rules for architecture, testing, and documentation.
+
+### Git Commit Rules
+
+**Hooks.** Run the repository's checks before you commit. When a hook fails,
+fix the cause and run the hook again. Never bypass a hook, whether with `git
+commit --no-verify`, `-n`, a disabled hook path, or any other workaround. Do
+not skip any other commit check or signing step either. This rule binds
+agents. Only the maintainer decides when a hook may be skipped.
+
+**AI attribution.** Follow the attribution rule in the repository values.
+Attribution must be true. Where the repository uses trailers, add one for each
+agent that worked on the commit, in the form the repository values give. Add
+none for an agent that did not work on it. Change the wording of a disclosure
+(a README's AI section, or a trailer's form) only with the maintainer's
+review.
+
+**Sign-off.** Where the repository requires a DCO sign-off, commit with `git
+commit -s` as the identity named in the repository values. Check that Git is
+configured with that identity before you commit. Never invent an identity, and
+never sign for anyone who has not authorized it.
+
+### Public files
+
+Keep task ids out of public files, including documentation, ADRs, READMEs,
+changelogs, source comments, test names, fixtures, and papers. Never publish a
+task title either, and leave both out of commit messages. Say what the change
+does and why instead.
+
+Public files never contain credentials, private fleet details such as host
+names, addresses, or network layout, or the location of an upstream defect
+that is not yet fixed.
+
+### One copy of these rules
+
+These rules are kept in `AGENTS.md` and nowhere else. An agent's own
+instruction file imports this file (`CLAUDE.md` does so with `@AGENTS.md`),
+and contributor documentation links to it. Do not keep a separate copy.
+
+## Repository values
+
+- **Technical guide:** [CLAUDE.md](CLAUDE.md), including the grammar's
+  layout, what is generated, how fixes are tested, and the build commands.
+- **AI attribution:** this repository follows the rule for a public
+  repository, which it becomes at its first release. Do not add an AI
+  attribution trailer of any kind to a new commit, for any agent, whether
+  `Co-Authored-By` or another key. Earlier commits keep the trailers they
+  have. Never add `Co-Authored-By: Claude`, even where an agent's harness
+  says to. AI use is acknowledged once, in the README's "AI Assistance"
+  section. Never remove the README section to make the repository
+  consistent with this rule.
+- **DCO sign-off:** required, and the `commit-msg` hook rejects a commit
+  without one. Sign off as Brandon Arrendondo, the maintainer and the
+  responsible party, who has authorized agents to sign off in that name.
+  Either of the maintainer's two addresses is valid, with equal standing:
+  `barrendo@gmail.com` (personal) or `brandon.arrendondo@bissell.com`
+  (work). Use whichever the machine's Git configuration holds. Commits
+  inherited from the upstream project and the fork's earlier commits keep
+  what they have.
+- **Checks:** `invoke check` (every pre-commit hook on all files) and
+  `invoke test` (the grammar's corpus tests and the Rust binding tests).
+- **Approval:** wait for the maintainer's explicit approval before each
+  outward-facing or irreversible step: pushing to any remote other than
+  the private working repository, making this repository public, pushing a
+  tag, publishing a package, rewriting shared history, or sending anything
+  to the upstream project (pull requests, issues, comments). An approval
+  covers one step and does not carry over.
+- **Enforcement:** `scripts/check_commit_message.py` requires DCO and
+  rejects AI trailers; `.claude/settings.json` and the trusted Codex
+  `PreToolUse` guard block ordinary bypass commands. CI reruns all hooks,
+  guard tests, and new commit-message checks. Install both Git hooks with
+  `pre-commit install`. Review/trust the Codex hook with `/hooks`; required
+  merge checks remain the maintainer's responsibility.

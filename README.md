@@ -1,9 +1,10 @@
 # tree-sitter-rst
 
-[![CI](https://github.com/stsewd/tree-sitter-rst/workflows/CI/badge.svg)](https://github.com/stsewd/tree-sitter-rst/actions?query=workflow%3ACI+branch%3Amaster)
-[![PyPI - Version](https://img.shields.io/pypi/v/tree-sitter-rst)](https://pypi.org/project/tree-sitter-rst/)
-[![NPM Version](https://img.shields.io/npm/v/tree-sitter-rst)](https://www.npmjs.com/package/tree-sitter-rst)
-[![Crates.io Version](https://img.shields.io/crates/v/tree-sitter-rst)](https://crates.io/crates/tree-sitter-rst)
+A fork of [stsewd/tree-sitter-rst](https://github.com/stsewd/tree-sitter-rst)
+that reads reStructuredText the way docutils does, so that tools built on it
+can trust the tree on real documentation. The fork's changes are listed in
+[CHANGELOG.md](CHANGELOG.md); contributors start with [AGENTS.md](AGENTS.md)
+and [CLAUDE.md](CLAUDE.md).
 
 reStructuredText grammar for [tree-sitter](https://tree-sitter.github.io/tree-sitter/).
 Based on the specification from  <https://docutils.sourceforge.io/docs/ref/rst/restructuredtext.html>.
@@ -17,8 +18,6 @@ Check the playground at <https://stsewd.dev/tree-sitter-rst/>.
 - Allow lists with blank lines between items
 - Refactor parse citation and footer reference
 - Nested line blocks
-- Option lists: space-separated arguments (`-o file`, `-o <file>`) and
-  recognition inside block quotes
 - Add some nodes to inline?
 - Check if there is a way to re-implement some nodes to JS instead of C?
 - tests, tests, and more tests!
@@ -60,8 +59,23 @@ Check the playground at <https://stsewd.dev/tree-sitter-rst/>.
 
 ## Contributing
 
-Check the [CONTRIBUTING.md](CONTRIBUTING.md) file
+Check the [CONTRIBUTING.md](CONTRIBUTING.md) file for how the grammar and
+scanner work, and [AGENTS.md](AGENTS.md) for the commit rules (DCO sign-off,
+hooks). Run `invoke check` and `invoke test` before committing.
 
 ## Other grammars
 
 - [tree-sitter-comment](https://github.com/stsewd/tree-sitter-comment): grammar for comment tags like `TODO`, `FIXME(user)`.
+
+## AI Assistance
+
+This fork's changes were developed with assistance from
+[Claude](https://claude.ai) (Anthropic), used for the grammar and scanner
+fixes, their tests, and the repository's tooling. Each change was reviewed
+before it was merged. The contribution is acknowledged once, here, and not
+with a co-author trailer on each commit. Brandon Arrendondo is the
+accountable reviewer.
+
+## License
+
+MIT, as the upstream project. See [LICENSE](LICENSE).
