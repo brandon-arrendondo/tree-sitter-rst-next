@@ -6,7 +6,23 @@ Changes before the fork are in the upstream project's history.
 
 ## [Unreleased]
 
-Changes since the upstream project's 0.2.0.
+Changes since the fork from the upstream project at commit `a60f107`
+(0.2.0 and the changes after it). Of those later upstream changes, two
+reach users of this release: the scanner saves and restores its
+indentation state correctly, so re-parsing a document after an edit no
+longer loses it, and the grammar is generated with tree-sitter 0.26.9.
+
+### Changed
+
+- The packages are named `tree-sitter-rst-next` (crates.io, npm and PyPI).
+  The names code imports are unchanged: the language is `rst`, the Rust
+  crate and Python module are `tree_sitter_rst`, and the C function is
+  `tree_sitter_rst()`, so switching needs no code change. The package
+  replaces the original `tree-sitter-rst` and cannot be installed beside
+  it, because both provide the same module, library and C symbol:
+  uninstall `tree-sitter-rst` first.
+- The parser uses tree-sitter's language ABI 15 (it was 14) and needs a
+  tree-sitter runtime of version 0.25 or later.
 
 ### Added
 

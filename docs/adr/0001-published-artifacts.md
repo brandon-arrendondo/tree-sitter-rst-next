@@ -56,9 +56,9 @@ publication**. **BISSELL Homecare, Inc. is the primary copyright
 holder**, and the project is licensed under **MIT**, as recorded in
 `LICENSE`. The original grammar's author, Santos Gallegos, is credited as
 the MIT License requires: their copyright notice stays in `LICENSE` and the
-README names them (ruled 2026-11-02, Brandon Arrendondo). Contributions require the DCO sign-off recorded in
-AGENTS.md; a sign-off does not substitute for the accountable Associate's
-artifact review.
+README names them (ruled 2026-11-02, Brandon Arrendondo). Contributions
+require the DCO sign-off recorded in AGENTS.md; a sign-off does not
+substitute for the accountable Associate's artifact review.
 
 These conditions carry out the BISSELL AI Acceptable Use Policy's
 principles of accountability, data protection, intellectual property, data

@@ -1,7 +1,8 @@
 # aurora-lint manifest for the hand-written scanner (src/scanner.c and
 # src/tree_sitter_rst/). Every rule aurora-lint 0.7.0 ships is enabled, as in
 # its rules-all.toml template; the settings below declare what the scanner is
-# built for. Accepted findings are in conf/aurora-lint-suppress.toml.
+# built for. Findings recorded at adoption, not yet reviewed, are in
+# conf/aurora-lint-suppress.toml.
 profile = "default"
 
 [metadata]

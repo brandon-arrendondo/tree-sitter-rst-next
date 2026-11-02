@@ -11,7 +11,13 @@ and [CLAUDE.md](CLAUDE.md).
 reStructuredText grammar for [tree-sitter](https://tree-sitter.github.io/tree-sitter/).
 Based on the specification from  <https://docutils.sourceforge.io/docs/ref/rst/restructuredtext.html>.
 
-Try it in the playground: `make serve`, then open the page it prints.
+The packages are named `tree-sitter-rst-next`, but code imports them under
+the original names (`tree_sitter_rst`, language `rst`). They provide the same
+module, library and C symbol as the original `tree-sitter-rst`, so the two
+cannot be installed together: uninstall `tree-sitter-rst` first.
+
+Try it in the tree-sitter CLI's playground: `make serve` builds the grammar
+to WebAssembly and runs `tree-sitter playground`, which opens the page.
 
 **Note: this grammar is still under development, a lot of things may change!**
 

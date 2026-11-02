@@ -82,7 +82,8 @@ Some of the files that aren't auto-generated are:
 - `test/examples/`: these are the files that docutils uses to run their tests,
   we parse then without checking the resulting CST,
   we only care if our parser errors in the process.
-- `docs/`: the playground page (`make serve`).
+- `docs/`: the documentation site's playground page. `make serve` does not
+  use it; it runs the tree-sitter CLI's own playground.
 
 ## Developing
 

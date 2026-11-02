@@ -1,4 +1,4 @@
-# aurora-lint findings accepted when the gate was adopted.
+# aurora-lint findings recorded when the gate was adopted.
 #
 # Every entry was present in the scanner as inherited from the upstream
 # project and has NOT yet been reviewed: the gate ratchets from here, so a

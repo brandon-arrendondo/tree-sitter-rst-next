@@ -22,9 +22,6 @@ let package = Package(
             dependencies: [],
             path: ".",
             sources: sources,
-            resources: [
-                .copy("queries")
-            ],
             publicHeadersPath: "bindings/swift",
             cSettings: [.headerSearchPath("src")]
         ),
