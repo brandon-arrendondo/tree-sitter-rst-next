@@ -39,7 +39,11 @@ repos:
     hooks:
       - id: ruff-format
         args: [--check]
+        # identify types binding.gyp as Python; ruff, given the directory
+        # as CI does, skips it.
+        exclude: ^binding\.gyp$
       - id: ruff-check
+        exclude: ^binding\.gyp$
 
   - repo: local
     hooks:
