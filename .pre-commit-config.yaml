@@ -32,6 +32,15 @@ repos:
       - id: mixed-line-ending
         args: [--fix=lf]
 
+  # The same ruff version and checks as CI's python job. pyproject.toml
+  # leaves scripts/ out of formatting (the shared guard scripts).
+  - repo: https://github.com/astral-sh/ruff-pre-commit
+    rev: v0.15.8
+    hooks:
+      - id: ruff-format
+        args: [--check]
+      - id: ruff-check
+
   - repo: local
     hooks:
       # The generated parser must match grammar.js. `invoke generate` checks

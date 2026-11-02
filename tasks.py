@@ -132,14 +132,20 @@ def bump_version(c, new_version=None):
     for path, pattern in VERSION_FILES:
         p = ROOT / path
         text = p.read_text()
-        updated = re.sub(pattern, rf"\g<1>{new_version}\g<2>", text, count=1, flags=re.MULTILINE)
+        updated = re.sub(
+            pattern, rf"\g<1>{new_version}\g<2>", text, count=1, flags=re.MULTILINE
+        )
         if updated == text:
-            raise Exit(f"{path}: no version string matched; update VERSION_FILES", code=2)
+            raise Exit(
+                f"{path}: no version string matched; update VERSION_FILES", code=2
+            )
         p.write_text(updated)
         changed.append(path)
     # The lock files record the package's own version too.
     c.run("cargo update --workspace --quiet", pty=True)
-    c.run("npm install --package-lock-only --ignore-scripts --silent", pty=True, warn=True)
+    c.run(
+        "npm install --package-lock-only --ignore-scripts --silent", pty=True, warn=True
+    )
     print(f"Bumped {current} -> {new_version} in:")
     for path in changed + ["Cargo.lock", "package-lock.json"]:
         print(f"  {path}")

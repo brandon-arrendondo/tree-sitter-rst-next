@@ -39,7 +39,8 @@ jobs:
         with:
           python-version: "3.10"
       - name: Install ruff
-        run: pip install ruff
+        # The same version as the ruff hooks in .pre-commit-config.yaml.
+        run: pip install ruff==0.15.8
       - name: Format
         run: ruff format --check .
       - name: Lint

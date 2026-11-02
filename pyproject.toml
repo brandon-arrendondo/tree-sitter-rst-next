@@ -36,3 +36,9 @@ exclude = [
   "bindings",
   "setup.py",
 ]
+
+[tool.ruff.format]
+# The commit and agent guard scripts are kept byte-identical to the copies
+# in our other repositories and formatted there; formatting them here
+# would make them differ.
+exclude = ["scripts/*"]
