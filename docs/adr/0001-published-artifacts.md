@@ -6,15 +6,15 @@ accepted, and met at the repository's head, before it is made public.
 
 ## Context
 
-This repository is a fork of an MIT-licensed grammar that will be published
-as its own project: the repository, and packages built from it. Our other
+This repository started as a fork of an MIT-licensed grammar and will be
+published as our own project: the repository, and packages built from it. Our other
 public tools (aurora-lint, knots, Moldy) each hold the same four conditions
 for anything they publish. Making a private repository public is the point
 at which it must adopt them.
 
-A fork adds a question those tools do not have: most of the code was
-written by someone else, under their copyright, and the fork's changes sit
-on top of it.
+A fork adds a question those tools do not have: much of the code was
+written by someone else, under their copyright, and our changes sit on top
+of it.
 
 ## Decision
 
@@ -30,10 +30,9 @@ archive.
      allow. Identify quotations as quotations and cite them. This applies
      to text, figures and code, including docutils' parser, which the
      grammar follows but does not copy.
-   - The upstream project's licence notice stays in `LICENSE`, and the
-     README names the upstream project. A file this project changes keeps
-     the upstream notice; the history records what changed, who changed it
-     and when.
+   - The original author's MIT notice stays in `LICENSE`, and the README
+     names the original project and its author. The history records what
+     changed, who changed it and when.
 2. **It is released only as a sanitized export.**
    - Publish only what the recipient needs: the grammar, its generated
      parser, bindings and documentation. Do not publish working records,
@@ -53,10 +52,11 @@ archive.
    mechanism. Contributor attribution rules remain in AGENTS.md.
 
 Every artifact goes through **BISSELL legal review before submission or
-publication**. The project is licensed under **MIT**, as upstream.
-Who holds copyright in the fork's own changes, and how `LICENSE` records it
-beside the upstream author's notice, is settled in that review before the
-first release. Contributions require the DCO sign-off recorded in
+publication**. **BISSELL Homecare, Inc. is the primary copyright
+holder**, and the project is licensed under **MIT**, as recorded in
+`LICENSE`. The original grammar's author, Santos Gallegos, is credited as
+the MIT License requires: their copyright notice stays in `LICENSE` and the
+README names them (ruled 2026-11-02, Brandon Arrendondo). Contributions require the DCO sign-off recorded in
 AGENTS.md; a sign-off does not substitute for the accountable Associate's
 artifact review.
 
@@ -80,4 +80,4 @@ quality and AI attribution.
   history-rewrite authorization.
 
 Origin: adaptation of Moldy ADR-0001, itself adapted from knots ADR-0006 and
-aurora-lint ADR-0016, with the fork's licensing and naming questions added.
+aurora-lint ADR-0016, with the fork's licensing and naming added.

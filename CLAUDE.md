@@ -2,8 +2,9 @@
 
 @AGENTS.md
 
-A tree-sitter grammar for reStructuredText, forked from
-[stsewd/tree-sitter-rst](https://github.com/stsewd/tree-sitter-rst) (MIT).
+A tree-sitter grammar for reStructuredText. It started as a fork of
+[stsewd/tree-sitter-rst](https://github.com/stsewd/tree-sitter-rst) (MIT)
+and is maintained as our own project.
 The goal is a parse tree that reads a document the way docutils does, so
 that formatters and scanners built on it (Moldy's reStructuredText
 formatter first) can trust it on real documentation.
@@ -80,8 +81,11 @@ when the code around it changes, and remove its entry once it is fixed.
 `conf/aurora-lint-rules.toml` holds the rules and what the scanner is built
 for (environment, allocators, scope). Generated C is not formatted or gated.
 
-## Upstream
+## Ownership
 
-Keep the fork's changes easy to offer upstream: one fix per commit, each
-with its test. Sending anything upstream needs the maintainer's approval
-(AGENTS.md).
+This project owns the whole grammar, including the code it inherited: a
+problem anywhere in it is ours to fix here, not to wait on upstream for.
+Describe an inherited defect like any other fix. Offering a fix to the
+original project is optional, and sending anything there needs the
+maintainer's approval (AGENTS.md). `LICENSE` keeps the original author's
+MIT notice beside BISSELL Homecare, Inc.'s.

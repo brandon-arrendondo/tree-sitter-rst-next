@@ -34,8 +34,10 @@ subjects or work-item titles. Exclude tests, corpus work, docs-only edits,
 CI and packaging chores, refactors and regenerated files with no
 user-visible effect.
 
-Do not publish internal tracking references or locate defects in another
-project that have not been fixed upstream.
+Do not publish internal tracking references. The grammar's defects,
+including those inherited from the original project, are this project's
+own: describe their fixes like any other. Do not locate an unfixed defect
+in any other project.
 
 ## Consequences
 

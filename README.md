@@ -1,8 +1,10 @@
 # tree-sitter-rst
 
-A fork of [stsewd/tree-sitter-rst](https://github.com/stsewd/tree-sitter-rst)
-that reads reStructuredText the way docutils does, so that tools built on it
-can trust the tree on real documentation. The fork's changes are listed in
+A reStructuredText grammar that reads documents the way docutils does, so
+that tools built on it can trust the tree on real documentation. It started
+as a fork of [stsewd/tree-sitter-rst](https://github.com/stsewd/tree-sitter-rst)
+by Santos Gallegos and is maintained here as its own project. Changes since
+the fork are listed in
 [CHANGELOG.md](CHANGELOG.md); contributors start with [AGENTS.md](AGENTS.md)
 and [CLAUDE.md](CLAUDE.md).
 
@@ -78,4 +80,6 @@ accountable reviewer.
 
 ## License
 
-MIT, as the upstream project. See [LICENSE](LICENSE).
+MIT. Copyright 2026 BISSELL Homecare, Inc. The original grammar is
+Copyright 2020 Santos Gallegos, credited under the MIT License. See
+[LICENSE](LICENSE).
