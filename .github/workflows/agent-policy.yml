@@ -24,7 +24,7 @@ jobs:
         with:
           components: rustfmt, clippy
       - name: Set up tree-sitter
-        uses: tree-sitter/setup-action/cli@eeb902ac2f1be576edc296309872cf476a209b7f # v2
+        uses: tree-sitter/setup-action/cli@faab9a23fa6195da0f1cf868219cc1e89f238d3d # v2
         with:
           tree-sitter-ref: v0.26.9
       - name: Install tools
