@@ -281,11 +281,10 @@ static bool is_attribution_mark(int32_t c)
 /// The scanner should be set to a char after a newline.
 static int get_indent_level(RSTScanner *scanner)
 {
-    int32_t current = scanner->lookahead;
     int indent = 0;
 
     while (true) {
-        current = scanner->lookahead;
+        const int32_t current = scanner->lookahead;
         if (current == CHAR_SPACE || current == CHAR_VERTICAL_TAB || current == CHAR_FORM_FEED) {
             indent += 1;
         }

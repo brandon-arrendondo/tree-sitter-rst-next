@@ -7,6 +7,7 @@ Checks: >-
   -bugprone-suspicious-include,
   -clang-analyzer-security.insecureAPI.DeprecatedOrUnsafeBufferHandling
 
-# Only report diagnostics from hand-written sources; generated parser.c files
-# are excluded via --line-filter in the Makefile lint-tidy target.
+# Only report diagnostics from hand-written sources: the Makefile lint-tidy
+# target's --header-filter selects src/tree_sitter_rst/; the generated
+# src/parser.c is never analyzed.
 FormatStyle: none

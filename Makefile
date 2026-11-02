@@ -122,17 +122,21 @@ format:
 	moldy --in-place src/scanner.c src/tree_sitter_rst/*
 
 # Lint targets — run both with `make lint`
-# clang-tidy uses --line-filter so only hand-written files are reported;
-# generated parser.c files are compiled for analysis but their diagnostics
-# are suppressed.
-CLANG_TIDY_LINE_FILTER := [{"name":"src/scanner.c"},{"name":"tree_sitter_rst/scanner.c"},{"name":"tree_sitter_rst/chars.c"},{"name":"tree_sitter_rst/table.c"}]
+# Both tools analyze src/scanner.c, which #includes the hand-written files
+# in src/tree_sitter_rst/ (parser.c among them). The generated src/parser.c
+# is a separate translation unit and is not analyzed. clang-tidy reports
+# diagnostics in an included file only when --header-filter matches it, so
+# the filter names the hand-written directory and leaves out the generated
+# headers in src/tree_sitter/. A warning fails the target.
+CLANG_TIDY_HEADER_FILTER := src/tree_sitter_rst/.*
 
 # moldy formats the scanner (see .pre-commit-config.yaml).
 lint: lint-tidy lint-cppcheck
 
 lint-tidy:
 	clang-tidy \
-	  --line-filter='$(CLANG_TIDY_LINE_FILTER)' \
+	  --header-filter='$(CLANG_TIDY_HEADER_FILTER)' \
+	  --warnings-as-errors='*' \
 	  src/scanner.c \
 	  -- -Isrc/ -std=c11
 
@@ -140,8 +144,6 @@ lint-cppcheck:
 	cppcheck --enable=warning,performance \
 	  --error-exitcode=1 \
 	  --suppress=missingIncludeSystem \
-	  --suppress='uninitvar:*/parser.c' \
-	  --suppress='cstyleCast:*/parser.c' \
 	  -Isrc/ \
 	  src/scanner.c
 
