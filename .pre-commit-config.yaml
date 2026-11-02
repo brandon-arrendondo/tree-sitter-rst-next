@@ -37,18 +37,21 @@ repos:
       # The generated parser must match grammar.js. `invoke generate` checks
       # the tree-sitter CLI's version first: another version writes a
       # different parser.c.
+      # Both run on every commit: the top-level exclude hides the generated
+      # files, so a commit that edits only them would otherwise skip the
+      # drift check.
       - id: tree-sitter-generated
         name: tree-sitter generate (src/ is current)
         entry: bash -c 'invoke generate && git diff --exit-code -- src/'
         language: system
-        files: ^(grammar\.js|package\.json|src/)
+        always_run: true
         pass_filenames: false
 
       - id: tree-sitter-test
         name: tree-sitter test (grammar corpus)
         entry: bash -c 'invoke generate >/dev/null && "${TREE_SITTER:-tree-sitter}" test'
         language: system
-        files: ^(grammar\.js|src/|test/corpus/|queries/)
+        always_run: true
         pass_filenames: false
 
       - id: cargo-fmt
@@ -106,8 +109,8 @@ repos:
         pass_filenames: false
 
   # CERT C analysis. pre-commit cargo-installs exactly this version into the
-  # hook's environment and never runs an aurora-lint on PATH. Accepted
-  # findings are recorded, with their justification, in
+  # hook's environment and never runs an aurora-lint on PATH. The findings
+  # present when the gate was adopted are recorded, not yet reviewed, in
   # conf/aurora-lint-suppress.toml; any other finding fails.
   - repo: local
     hooks:
