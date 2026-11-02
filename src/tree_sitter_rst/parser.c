@@ -526,6 +526,40 @@ static bool parse_explict_markup_start(RSTScanner *scanner)
     return false;
 }
 
+
+/// The indent of an explicit markup body: its least indented line, as in
+/// docutils, so a first line indented deeper than the lines after it does
+/// not end the body at the next line. The scanner is on the first body
+/// line, after its indent, which is `indent`; it reads ahead to the first
+/// line indented no deeper than the marker's block. A first line that is
+/// not indented past the block leaves the body empty: its indent is one
+/// past the block's.
+static int explicit_markup_body_indent(RSTScanner *scanner, int indent)
+{
+    if (indent <= scanner->back(scanner)) {
+        return scanner->back(scanner) + 1;
+    }
+    while (scanner->lookahead != CHAR_EOF) {
+        while (!is_newline(scanner->lookahead)) {
+            scanner->advance(scanner);
+        }
+        if (scanner->lookahead == CHAR_EOF) {
+            break;
+        }
+        scanner->advance(scanner);
+        const int line_indent = get_indent_level(scanner);
+        if (is_newline(scanner->lookahead)) {
+            continue;
+        }
+        if (line_indent <= scanner->back(scanner)) {
+            break;
+        }
+        if (line_indent < indent) {
+            indent = line_indent;
+        }
+    }
+    return indent;
+}
 static bool parse_inner_list_element(RSTScanner *scanner, int consumed_chars, enum TokenType token_type)
 {
     const bool *valid_symbols = scanner->valid_symbols;
@@ -575,9 +609,7 @@ static bool parse_inner_list_element(RSTScanner *scanner, int consumed_chars, en
                 }
                 scanner->advance(scanner);
             }
-            if (indent <= scanner->back(scanner)) {
-                indent = scanner->back(scanner) + 1;
-            }
+            indent = explicit_markup_body_indent(scanner, indent);
         }
         else if (token_type == T_NUMERIC_BULLET) {
             // Check if the next line is an underline.

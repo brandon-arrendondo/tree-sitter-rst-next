@@ -1410,3 +1410,29 @@ Comments
   (comment)
   (comment)
   (comment))
+
+================================================================================
+An explicit markup body is indented as far as its least indented line
+================================================================================
+
+.. code-block:: c
+
+      deeper first
+   then less
+
+.. A comment
+      deeper first
+   then less
+
+After.
+
+--------------------------------------------------------------------------------
+
+(document
+  (directive
+    name: (type)
+    body: (body
+      (arguments)
+      (content)))
+  (comment)
+  (paragraph))
