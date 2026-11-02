@@ -11,7 +11,7 @@ and [CLAUDE.md](CLAUDE.md).
 reStructuredText grammar for [tree-sitter](https://tree-sitter.github.io/tree-sitter/).
 Based on the specification from  <https://docutils.sourceforge.io/docs/ref/rst/restructuredtext.html>.
 
-Check the playground at <https://stsewd.dev/tree-sitter-rst/>.
+Try it in the playground: `make serve`, then open the page it prints.
 
 **Note: this grammar is still under development, a lot of things may change!**
 
@@ -52,26 +52,15 @@ Check the playground at <https://stsewd.dev/tree-sitter-rst/>.
   https://docutils.sourceforge.io/docs/user/rst/quickstart.html
 
 
-## Projects using this grammar
-
-- [nvim-treesitter](https://github.com/nvim-treesitter/nvim-treesitter)
-- [helix](https://github.com/helix-editor/helix)
-- [zed-rst](https://github.com/elmarco/zed-rst)
-- Yours?
-
 ## Contributing
 
 Check the [CONTRIBUTING.md](CONTRIBUTING.md) file for how the grammar and
 scanner work, and [AGENTS.md](AGENTS.md) for the commit rules (DCO sign-off,
 hooks). Run `invoke check` and `invoke test` before committing.
 
-## Other grammars
-
-- [tree-sitter-comment](https://github.com/stsewd/tree-sitter-comment): grammar for comment tags like `TODO`, `FIXME(user)`.
-
 ## AI Assistance
 
-This fork's changes were developed with assistance from
+This project's changes since the fork were developed with assistance from
 [Claude](https://claude.ai) (Anthropic), used for the grammar and scanner
 fixes, their tests, and the repository's tooling. Each change was reviewed
 before it was merged. The contribution is acknowledged once, here, and not

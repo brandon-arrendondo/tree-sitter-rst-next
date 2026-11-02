@@ -13,14 +13,13 @@ classifiers = [
   "Topic :: Text Processing :: Linguistic",
   "Typing :: Typed",
 ]
-authors = [{ name = "Santos Gallegos", email = "stsewd@proton.me" }]
+authors = [{ name = "Brandon Arrendondo", email = "brandon.arrendondo@bissell.com" }]
 requires-python = ">=3.10"
 license.text = "MIT"
 readme = "README.md"
 
 [project.urls]
-Homepage = "https://github.com/stsewd/tree-sitter-rst"
-Funding = "https://github.com/sponsors/stsewd"
+Homepage = "https://github.com/brandon-arrendondo/tree-sitter-rst-next"
 
 [project.optional-dependencies]
 core = ["tree-sitter~=0.24"]

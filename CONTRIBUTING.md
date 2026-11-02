@@ -82,7 +82,7 @@ Some of the files that aren't auto-generated are:
 - `test/examples/`: these are the files that docutils uses to run their tests,
   we parse then without checking the resulting CST,
   we only care if our parser errors in the process.
-- `docs/`: this directory is deployed to GitHub pages <https://stsewd.dev/tree-sitter-rst/>.
+- `docs/`: the playground page (`make serve`).
 
 ## Developing
 

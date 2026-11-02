@@ -19,14 +19,12 @@
     "description": "reStructuredText grammar for tree-sitter",
     "authors": [
       {
-        "name": "Santos Gallegos",
-        "email": "stsewd@proton.me",
-        "url": "https://stsewd.dev/"
+        "name": "Brandon Arrendondo",
+        "email": "brandon.arrendondo@bissell.com"
       }
     ],
     "links": {
-      "repository": "https://github.com/stsewd/tree-sitter-rst",
-      "funding": "https://github.com/sponsors/stsewd"
+      "repository": "https://github.com/brandon-arrendondo/tree-sitter-rst-next"
     }
   },
   "bindings": {

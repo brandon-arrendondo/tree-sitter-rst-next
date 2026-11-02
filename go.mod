@@ -1,4 +1,4 @@
-module github.com/stsewd/tree-sitter-rst
+module github.com/brandon-arrendondo/tree-sitter-rst-next
 
 go 1.22
 

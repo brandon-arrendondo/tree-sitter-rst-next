@@ -2,12 +2,12 @@
 name = "tree-sitter-rst"
 description = "reStructuredText grammar for tree-sitter"
 version = "0.2.0"
-authors = ["Santos Gallegos <stsewd@proton.me>"]
+authors = ["Brandon Arrendondo <brandon.arrendondo@bissell.com>"]
 license = "MIT"
 readme = "README.md"
 keywords = ["incremental", "parsing", "tree-sitter", "rst"]
 categories = ["parser-implementations", "parsing", "text-editors"]
-repository = "https://github.com/stsewd/tree-sitter-rst"
+repository = "https://github.com/brandon-arrendondo/tree-sitter-rst-next"
 edition = "2021"
 autoexamples = false
 
