@@ -22,7 +22,10 @@ longer loses it, and the grammar is generated with tree-sitter 0.26.9.
   it, because both provide the same module, library and C symbol:
   uninstall `tree-sitter-rst` first.
 - The parser uses tree-sitter's language ABI 15 (it was 14) and needs a
-  tree-sitter runtime of version 0.25 or later.
+  tree-sitter runtime of version 0.25 or later. The Python package's
+  `core` extra and the npm package's `tree-sitter` peer dependency require
+  0.25; the Rust crate depends only on `tree-sitter-language`, so a Rust
+  project must use the `tree-sitter` crate 0.25 or later itself.
 
 ### Added
 
