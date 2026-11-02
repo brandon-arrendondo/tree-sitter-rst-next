@@ -66,10 +66,13 @@ quality and AI attribution.
 
 ## Consequences
 
-- Package names are part of the review: upstream publishes
-  `tree-sitter-rst` to crates.io, npm and PyPI, so this project's packages
-  need names of their own, and its package metadata (authors, repository,
-  funding links) must describe this project, not upstream's.
+- The original project publishes `tree-sitter-rst` to crates.io, npm and
+  PyPI, so this project publishes as `tree-sitter-rst-next` (ruled
+  2026-11-02, Brandon Arrendondo). The names code uses (the language
+  `rst`, the C function `tree_sitter_rst`, the Rust crate and Python module
+  `tree_sitter_rst`) are unchanged, so the package replaces the original
+  without code changes. Package metadata (authors, repository) describes
+  this project, not the original.
 - Upstream's publishing workflow and funding link are not this project's
   and are removed; a release workflow is added when the first release is
   prepared.

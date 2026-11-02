@@ -1,5 +1,5 @@
 [package]
-name = "tree-sitter-rst"
+name = "tree-sitter-rst-next"
 description = "reStructuredText grammar for tree-sitter"
 version = "0.2.0"
 authors = ["Brandon Arrendondo <brandon.arrendondo@bissell.com>"]
@@ -22,6 +22,9 @@ include = [
 ]
 
 [lib]
+# The crate is imported as tree_sitter_rst, so it replaces the original
+# package without code changes.
+name = "tree_sitter_rst"
 path = "bindings/rust/lib.rs"
 
 [dependencies]

@@ -1,4 +1,4 @@
-# tree-sitter-rst
+# tree-sitter-rst-next
 
 A reStructuredText grammar that reads documents the way docutils does, so
 that tools built on it can trust the tree on real documentation. It started

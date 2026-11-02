@@ -1,5 +1,5 @@
 """
-Invoke tasks for tree-sitter-rst development.
+Invoke tasks for tree-sitter-rst-next development.
 
 Usage:
     invoke generate       # Regenerate src/ from grammar.js
