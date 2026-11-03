@@ -6,9 +6,11 @@ Changes before the fork are in the upstream project's history.
 
 ## [Unreleased]
 
-Changes since the fork from the upstream project at commit `a60f107`
-(0.2.0 and the changes after it). Of those later upstream changes, two
-reach users of this release: the scanner saves and restores its
+## [0.3.0] - 2026-11-02
+
+The first release of tree-sitter-rst-next. Changes since the fork from the
+upstream project at commit `a60f107` (0.2.0 and the changes after it). Of
+those later upstream changes, two reach users of this release: the scanner saves and restores its
 indentation state correctly, so re-parsing a document after an edit no
 longer loses it, and the grammar is generated with tree-sitter 0.26.9.
 
@@ -63,3 +65,6 @@ longer loses it, and the grammar is generated with tree-sitter 0.26.9.
   another enumerator (`1. Start the thread` with its text continued on the
   next line, unindented) is paragraph text, as in docutils, instead of a
   list item that failed at the second line.
+
+[Unreleased]: https://github.com/brandon-arrendondo/tree-sitter-rst-next/compare/v0.3.0...HEAD
+[0.3.0]: https://github.com/brandon-arrendondo/tree-sitter-rst-next/releases/tag/v0.3.0

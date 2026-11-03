@@ -1,6 +1,6 @@
 {
   "name": "tree-sitter-rst-next",
-  "version": "0.2.0",
+  "version": "0.3.0",
   "description": "reStructuredText grammar for tree-sitter",
   "repository": "https://github.com/brandon-arrendondo/tree-sitter-rst-next",
   "license": "MIT",
