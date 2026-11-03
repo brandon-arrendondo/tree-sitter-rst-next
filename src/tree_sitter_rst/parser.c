@@ -35,16 +35,32 @@ static bool next_line_indented_past(RSTScanner *scanner, int indent)
     return !is_newline(scanner->lookahead) && next_indent > indent;
 }
 
+/// Whether the line is made of adornment characters and spaces only, like a
+/// table border (`=====  =====`, `+----+----+`). Consumes what it reads.
+static bool is_border_line(RSTScanner *scanner)
+{
+    if (!is_adornment_char(scanner->lookahead)) {
+        return false;
+    }
+    while (is_adornment_char(scanner->lookahead) || scanner->lookahead == CHAR_SPACE) {
+        scanner->advance(scanner);
+    }
+    return is_newline(scanner->lookahead);
+}
+
 /// Whether the line after a dedent that no blank line preceded goes on with
 /// the construct the dedent returned to: another item (see
 /// `starts_continuing_item`) or a definition list term. Anything else ends
-/// the construct, as docutils does after an unexpected unindent.
+/// the construct, as docutils does after an unexpected unindent. A border
+/// line is not taken to end it: tables are not parsed yet, and a table
+/// should stay a syntax error rather than be read as other elements.
 ///
 /// The lookahead is at the first character of the line; the scanner may
 /// advance past it, since the caller only returns zero-width tokens.
 static bool continues_after_unindent(RSTScanner *scanner, int indent)
 {
     return starts_continuing_item(scanner)
+           || is_border_line(scanner)
            || (scanner->valid_symbols[T_TEXT] && next_line_indented_past(scanner, indent));
 }
 
