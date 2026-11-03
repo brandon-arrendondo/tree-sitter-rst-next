@@ -41,6 +41,9 @@ VERSION_FILES = [
     ("CMakeLists.txt", r'^(        VERSION ")' + SEMVER + r'(")'),
 ]
 
+# Files that record the version and are regenerated from the ones above.
+GENERATED_VERSION_FILES = ["Cargo.lock", "package-lock.json", "src/parser.c"]
+
 
 def _read_cargo_version():
     cargo = (ROOT / "Cargo.toml").read_text()
@@ -112,7 +115,9 @@ def bump_version(c, new_version=None):
     """Set the grammar's version in every file that embeds it.
 
     Reads the current version from Cargo.toml. With no --new-version, prints
-    the current version and the files that would change.
+    the current version and the files that would change. The generated
+    src/parser.c records the version, so it is regenerated, with the
+    tree-sitter CLI checked before any file changes.
 
     Args:
         new_version: Target version string, e.g. 0.3.0 (no leading 'v').
@@ -121,12 +126,13 @@ def bump_version(c, new_version=None):
     if not new_version:
         print(f"Current version (Cargo.toml): {current}")
         print("\nFiles that would be updated:")
-        for path, _ in VERSION_FILES:
+        for path in [p for p, _ in VERSION_FILES] + GENERATED_VERSION_FILES:
             print(f"  {path}")
         print("\nRun: invoke bump-version --new-version X.Y.Z")
         return
     if not re.fullmatch(SEMVER, new_version):
         raise Exit(f"--new-version must look like X.Y.Z, got '{new_version}'", code=2)
+    _require_cli(c)
 
     changed = []
     for path, pattern in VERSION_FILES:
@@ -141,13 +147,13 @@ def bump_version(c, new_version=None):
             )
         p.write_text(updated)
         changed.append(path)
-    # The lock files record the package's own version too.
     c.run("cargo update --workspace --quiet", pty=True)
     c.run(
         "npm install --package-lock-only --ignore-scripts --silent", pty=True, warn=True
     )
+    c.run(f"{TREE_SITTER} generate", pty=True)
     print(f"Bumped {current} -> {new_version} in:")
-    for path in changed + ["Cargo.lock", "package-lock.json"]:
+    for path in changed + GENERATED_VERSION_FILES:
         print(f"  {path}")
     print("\nNext: update CHANGELOG.md, review `git diff`, and commit.")
 
