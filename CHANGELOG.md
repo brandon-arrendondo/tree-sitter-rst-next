@@ -6,6 +6,11 @@ Changes before the fork are in the upstream project's history.
 
 ## [Unreleased]
 
+## [0.3.1] - 2026-11-03
+
+Fixes to how the scanner reads lists, comments and unindented lines, so more
+documents parse as docutils reads them. The node types are unchanged.
+
 ### Fixed
 
 - A word made of roman numeral letters (`did.`, `vivid.`, `civil.`) at the
@@ -96,5 +101,6 @@ longer loses it, and the grammar is generated with tree-sitter 0.26.9.
   next line, unindented) is paragraph text, as in docutils, instead of a
   list item that failed at the second line.
 
-[Unreleased]: https://github.com/brandon-arrendondo/tree-sitter-rst-next/compare/v0.3.0...HEAD
+[Unreleased]: https://github.com/brandon-arrendondo/tree-sitter-rst-next/compare/v0.3.1...HEAD
+[0.3.1]: https://github.com/brandon-arrendondo/tree-sitter-rst-next/compare/v0.3.0...v0.3.1
 [0.3.0]: https://github.com/brandon-arrendondo/tree-sitter-rst-next/releases/tag/v0.3.0

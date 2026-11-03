@@ -4,7 +4,7 @@ endif
 
 LANGUAGE_NAME := tree-sitter-rst
 HOMEPAGE_URL := https://github.com/brandon-arrendondo/tree-sitter-rst-next
-VERSION := 0.3.0
+VERSION := 0.3.1
 
 # repository
 SRC_DIR := src
