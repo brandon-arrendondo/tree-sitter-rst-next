@@ -567,10 +567,14 @@ module.exports = grammar({
       field('body', choice(alias($._directive_body, $.body), $._dedent)),
     ),
 
+    // Arguments start on the directive's first line and run, as in
+    // docutils, to the first blank line or the first option.
+    _directive_arguments: $ => repeat1($._text_line),
+
     _directive_body: $ => choice(
       // Directives with content
       seq(
-        optional(alias($._text_line, $.arguments)),
+        optional(alias($._directive_arguments, $.arguments)),
         optional(alias($.field_list, $.options)),
         $._blankline,
         alias($._indented_text_block, $.content),
@@ -578,9 +582,9 @@ module.exports = grammar({
       // Directives without content
       seq(
         choice(
-          alias($._text_line, $.arguments),
+          alias($._directive_arguments, $.arguments),
           alias($.field_list, $.options),
-          seq(alias($._text_line, $.arguments), alias($.field_list, $.options)),
+          seq(alias($._directive_arguments, $.arguments), alias($.field_list, $.options)),
         ),
         $._dedent,
       ),
@@ -592,11 +596,6 @@ module.exports = grammar({
           alias($._indented_text_block, $.content),
           seq(alias($.field_list, $.options), $._blankline, alias($._indented_text_block, $.content)),
         ),
-      ),
-      // Directives with multiline arguments are split as arguments + content
-      seq(
-        alias($._text_line, $.arguments),
-        alias($._indented_text_block, $.content),
       ),
     ),
 

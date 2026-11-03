@@ -1253,13 +1253,61 @@ Directives
   (directive
     (type)
     (body
-      (arguments)
-      (content)))
+      (arguments)))
   (directive
     (type)
     (body
       (arguments)))
   (comment))
+
+================================================================================
+Directive arguments run to the first blank line
+================================================================================
+
+.. c:macro:: PyObject_HEAD_INIT
+             (type)
+
+   Body text.
+
+.. function:: f(a,
+              b)
+   :noindex:
+
+   Body.
+
+.. note:: First
+   second
+
+   Para.
+
+.. note:: Only
+   more
+
+--------------------------------------------------------------------------------
+
+(document
+  (directive
+    (type)
+    (body
+      (arguments)
+      (content)))
+  (directive
+    (type)
+    (body
+      (arguments)
+      (options
+        (field
+          (field_name)))
+      (content)))
+  (directive
+    (type)
+    (body
+      (arguments)
+      (content)))
+  (directive
+    (type)
+    (body
+      (arguments))))
 
 ================================================================================
 Substitution definitions

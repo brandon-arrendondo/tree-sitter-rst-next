@@ -37,6 +37,15 @@ longer loses it, and the grammar is generated with tree-sitter 0.26.9.
 
 ### Fixed
 
+- A directive's arguments run, as in docutils, from its first line to the
+  first blank line or option (`.. function:: f(a,` with `b)` on the next
+  line is one `arguments` node). Only the first line was read as
+  arguments, and the lines after it, the blank line and the body became
+  one `content` node.
+- The body of a directive, comment or other explicit markup is indented as
+  far as its least indented line, as in docutils. A first line indented
+  deeper than the lines after it ended the body at the next line.
+
 - Two or more spaces after a footnote or citation label (`.. [1]  Body`)
   opened a block quote inside the body; whitespace in the middle of a line
   is no longer read as an indent.
