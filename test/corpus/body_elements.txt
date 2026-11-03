@@ -188,8 +188,8 @@ Z. Six
 An enumerator before an unindented line is text
 ================================================================================
 
-1. Start the thread with an interval of 400 us (double of expected
-application thread):
+1. A line that starts with an enumerator, followed by
+an unindented line that does not:
 
 Quote:
 
