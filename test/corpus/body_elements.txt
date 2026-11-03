@@ -1509,8 +1509,8 @@ A comment body below a bare marker is indented as far as its least indented line
 A word ending in a period is not an enumerator
 ================================================================================
 
-1. Provides detection of misspelled attribute
-assignments.  Only names in the list are allowed.
+1. The first line of a paragraph that goes on to a
+sentence.  The second sentence is on the same line.
 
 i. One
 ii. Two
@@ -1541,14 +1541,14 @@ B. Two
 An enumerator before an unindented line starting with punctuation is text
 ================================================================================
 
-4. Improves speed.  Reading is faster with
-``__slots__`` (as measured).
+4. A paragraph line followed by
+``literal`` text.
 
-4. For deploying bootloader files and
-`RZ/V2L SMARC Evaluation Board Kit`_
+4. A paragraph line followed by
+`a reference`_ and more.
 
-4. The ideal range is specified by
-'ideal-sample-range', and more.
+4. A paragraph line followed by
+'quoted' text.
 
 2. a
 #. b
