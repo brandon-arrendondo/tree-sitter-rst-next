@@ -19,6 +19,8 @@ static RSTScanner *new_rst_scanner()
 
     scanner->indent_stack = malloc(sizeof(int) * RST_SCANNER_STACK_MAX_CAPACITY);
     scanner->length = 0;
+    scanner->unindented = false;
+    scanner->after_unindent = false;
 
     scanner->push = rst_scanner_push;
     scanner->pop = rst_scanner_pop;
@@ -85,22 +87,27 @@ static int rst_scanner_back(const RSTScanner *scanner)
 
 static unsigned rst_scanner_serialize(RSTScanner *scanner, char *buffer)
 {
+    // The first byte is the unindented flag, the rest the indent stack.
+    const unsigned max_bytes = (TREE_SITTER_SERIALIZATION_BUFFER_SIZE - 1) / sizeof(int) * sizeof(int);
     unsigned bytes = scanner->length * sizeof(int);
 
-    if (bytes > TREE_SITTER_SERIALIZATION_BUFFER_SIZE) {
-        bytes = TREE_SITTER_SERIALIZATION_BUFFER_SIZE;
+    if (bytes > max_bytes) {
+        bytes = max_bytes;
     }
-    memcpy(buffer, scanner->indent_stack, bytes);
-    return bytes;
+    buffer[0] = (char)scanner->unindented;
+    memcpy(buffer + 1, scanner->indent_stack, bytes);
+    return bytes + 1;
 }
 
 static void rst_scanner_deserialize(RSTScanner *scanner, const char *buffer, unsigned length)
 {
     if (buffer != NULL && length > 0) {
-        memcpy(scanner->indent_stack, buffer, length);
-        scanner->length = length / sizeof(int);
+        scanner->unindented = buffer[0] != 0;
+        memcpy(scanner->indent_stack, buffer + 1, length - 1);
+        scanner->length = (length - 1) / sizeof(int);
     }
     else {
+        scanner->unindented = false;
         scanner->length = 0;
     }
 }

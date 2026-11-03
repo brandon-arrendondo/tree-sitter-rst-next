@@ -4,6 +4,94 @@
 #include "tokens.h"
 #include <stdio.h>
 
+/// Whether the line starts an item or block that may follow the one before
+/// it without a blank line: a bullet, enumerated, field, option or line
+/// block item, or an explicit markup block.
+static bool starts_continuing_item(const RSTScanner *scanner)
+{
+    const bool *valid_symbols = scanner->valid_symbols;
+    const int32_t current = scanner->lookahead;
+
+    return (valid_symbols[T_CHAR_BULLET] && is_char_bullet(current))
+           || (valid_symbols[T_NUMERIC_BULLET] && (is_numeric_bullet(current) || current == '('))
+           || (valid_symbols[T_FIELD_MARK] && current == ':')
+           || (valid_symbols[T_OPTION_MARK] && (current == '-' || current == '+' || current == '/'))
+           || (valid_symbols[T_EXPLICIT_MARKUP_START] && current == '.')
+           || (valid_symbols[T_LINE_BLOCK_MARK] && current == '|');
+}
+
+/// Whether the line after the current one is indented past `indent`, as the
+/// definition of a definition list term is.
+static bool next_line_indented_past(RSTScanner *scanner, int indent)
+{
+    while (!is_newline(scanner->lookahead)) {
+        scanner->advance(scanner);
+    }
+    if (scanner->lookahead == CHAR_EOF) {
+        return false;
+    }
+    scanner->advance(scanner);
+    const int next_indent = get_indent_level(scanner);
+    return !is_newline(scanner->lookahead) && next_indent > indent;
+}
+
+/// Whether the line after a dedent that no blank line preceded goes on with
+/// the construct the dedent returned to: another item (see
+/// `starts_continuing_item`) or a definition list term. Anything else ends
+/// the construct, as docutils does after an unexpected unindent.
+///
+/// The lookahead is at the first character of the line; the scanner may
+/// advance past it, since the caller only returns zero-width tokens.
+static bool continues_after_unindent(RSTScanner *scanner, int indent)
+{
+    return starts_continuing_item(scanner)
+           || (scanner->valid_symbols[T_TEXT] && next_line_indented_past(scanner, indent));
+}
+
+/// Whether whitespace with `newlines` line breaks, ending at `indent`, ends
+/// a body element: a blank line, the end of the file, or a line after an
+/// unexpected unindent.
+static bool ends_body_element(RSTScanner *scanner, int newlines, int indent)
+{
+    return newlines > 1
+           || scanner->lookahead == CHAR_EOF
+           || (scanner->after_unindent && !continues_after_unindent(scanner, indent));
+}
+
+/// Skip whitespace and line breaks, counting the line breaks in `newlines`
+/// (the end of the file counts as one). Returns the indent of the last line.
+static int skip_whitespace(RSTScanner *scanner, int *newlines)
+{
+    int indent = 0;
+
+    while (true) {
+        switch (scanner->lookahead) {
+            case CHAR_SPACE:
+            case CHAR_VERTICAL_TAB:
+            case CHAR_FORM_FEED:
+            case CHAR_NBSP:
+                indent += 1;
+                break;
+            case CHAR_TAB:
+                indent += TAB_STOP;
+                break;
+            case CHAR_NEWLINE:
+                (*newlines)++;
+                indent = 0;
+                break;
+            case CHAR_CARRIAGE_RETURN:
+                indent = 0;
+                break;
+            case CHAR_EOF:
+                (*newlines)++;
+                return 0;
+            default:
+                return indent;
+        }
+        scanner->skip(scanner);
+    }
+}
+
 static bool parse_indent(RSTScanner *scanner)
 {
     const bool *valid_symbols = scanner->valid_symbols;
@@ -14,35 +102,8 @@ static bool parse_indent(RSTScanner *scanner)
     // Whitespace in the middle of a line (e.g. between a footnote label and
     // its text) is a separator, not an indentation.
     bool at_line_start = lexer->get_column(lexer) == 0;
-    int indent = 0;
     int newlines = 0;
-    while (true) {
-        if (scanner->lookahead == CHAR_SPACE
-            || scanner->lookahead == CHAR_VERTICAL_TAB
-            || scanner->lookahead == CHAR_FORM_FEED
-            || scanner->lookahead == CHAR_NBSP) {
-            indent += 1;
-        }
-        else if (scanner->lookahead == CHAR_TAB) {
-            indent += TAB_STOP;
-        }
-        else if (scanner->lookahead == CHAR_EOF) {
-            indent = 0;
-            newlines++;
-            break;
-        }
-        else if (scanner->lookahead == CHAR_CARRIAGE_RETURN) {
-            indent = 0;
-        }
-        else if (scanner->lookahead == CHAR_NEWLINE) {
-            newlines++;
-            indent = 0;
-        }
-        else {
-            break;
-        }
-        scanner->skip(scanner);
-    }
+    const int indent = skip_whitespace(scanner, &newlines);
 
     if (!newlines && scanner->lookahead == ':' && valid_symbols[T_CLASSIFIER_MARK]) {
         return parse_classifier_mark(scanner);
@@ -57,11 +118,12 @@ static bool parse_indent(RSTScanner *scanner)
     if (newlines) {
         if (indent < current_indent && valid_symbols[T_DEDENT]) {
             scanner->pop(scanner);
+            scanner->unindented = newlines == 1;
             lexer->result_symbol = T_DEDENT;
             return true;
         }
 
-        if ((newlines > 1 || scanner->lookahead == CHAR_EOF) && valid_symbols[T_BLANKLINE]) {
+        if (valid_symbols[T_BLANKLINE] && ends_body_element(scanner, newlines, indent)) {
             lexer->result_symbol = T_BLANKLINE;
             return true;
         }

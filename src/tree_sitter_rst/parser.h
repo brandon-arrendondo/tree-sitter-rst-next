@@ -15,6 +15,11 @@
 #define IM_CITATION_REFERENCE 1u << 8u
 #define IM_REFERENCE 1u << 9u
 
+static bool starts_continuing_item(const RSTScanner* scanner);
+static bool next_line_indented_past(RSTScanner* scanner, int indent);
+static bool continues_after_unindent(RSTScanner* scanner, int indent);
+static bool ends_body_element(RSTScanner* scanner, int newlines, int indent);
+static int skip_whitespace(RSTScanner* scanner, int* newlines);
 static bool parse_indent(RSTScanner* scanner);
 static bool parse_overline(RSTScanner* scanner);
 static bool parse_underline(RSTScanner* scanner);

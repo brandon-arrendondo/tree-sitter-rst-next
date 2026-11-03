@@ -1573,3 +1573,87 @@ An enumerator before an unindented line starting with punctuation is text
         (paragraph))))
   (section
     (title)))
+
+================================================================================
+A block ends at an unindented line without a blank line
+================================================================================
+
+* A bullet item
+Text after the bullet list.
+
+Term
+  Definition
+Text after the definition list.
+
+ A block quote
+Text after the block quote.
+
+.. note:: A directive
+   with arguments
+Text after the directive.
+
+.. A comment
+Text after the comment.
+
+* Outer item
+
+  * Inner item
+  Outer item again.
+
+Term
+  Definition
+Another term
+  Another definition
+
+- One
+- Two
+
+--------------------------------------------------------------------------------
+
+(document
+  (bullet_list
+    (list_item
+      (body
+        (paragraph))))
+  (paragraph)
+  (definition_list
+    (list_item
+      (term)
+      (definition
+        (paragraph))))
+  (paragraph)
+  (block_quote
+    (paragraph))
+  (paragraph)
+  (directive
+    name: (type)
+    body: (body
+      (arguments)))
+  (paragraph)
+  (comment)
+  (paragraph)
+  (bullet_list
+    (list_item
+      (body
+        (paragraph)
+        (bullet_list
+          (list_item
+            (body
+              (paragraph))))
+        (paragraph))))
+  (definition_list
+    (list_item
+      (term)
+      (definition
+        (paragraph)))
+    (list_item
+      (term)
+      (definition
+        (paragraph))))
+  (bullet_list
+    (list_item
+      (body
+        (paragraph)))
+    (list_item
+      (body
+        (paragraph)))))

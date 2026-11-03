@@ -18,6 +18,10 @@ Changes before the fork are in the upstream project's history.
   that doesn't underline it (``` ``literal`` ```, `` `link`_ ``). The word
   was taken for the next enumerator, and the punctuation for a title
   underline, and the paragraph was read as a list.
+- A list, definition list, block quote, directive or comment followed
+  directly by a less indented line, with no blank line between, ends
+  there, and the line starts the next element, as in docutils (which
+  warns about the unexpected unindent). It was a syntax error.
 
 ## [0.3.0] - 2026-11-02
 

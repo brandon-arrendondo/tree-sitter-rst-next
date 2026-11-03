@@ -25,6 +25,11 @@ struct RSTScanner {
   int* indent_stack;
   unsigned length;
 
+  // Whether the last token was a dedent that no blank line preceded
+  // (serialized), and that state as the current scan started.
+  bool unindented;
+  bool after_unindent;
+
   void (*push)(RSTScanner* scanner, int value);
   int (*pop)(RSTScanner* scanner);
   int (*back)(const RSTScanner* scanner);
