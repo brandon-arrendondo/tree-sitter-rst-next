@@ -496,6 +496,56 @@ static bool parse_numeric_bullet(RSTScanner *scanner)
     return false;
 }
 
+/// Match one decimal place of a roman numeral at `pos`, with `digits` its
+/// one, five and ten: a five and up to three ones (`viii`), or up to three
+/// ones, or a single one with a five or ten after it (`iv`, `ix`).
+/// Returns the position after the match.
+static size_t match_roman_place(const int32_t *text, size_t length, size_t pos, const int32_t digits[3])
+{
+    const int32_t one = digits[0];
+    const int32_t five = digits[1];
+    const int32_t ten = digits[2];
+    int ones = 0;
+    bool has_five = false;
+
+    if (pos < length && text[pos] == five) {
+        has_five = true;
+        pos++;
+    }
+    while (ones < 3 && pos < length && text[pos] == one) {
+        pos++;
+        ones++;
+    }
+    if (!has_five && ones == 1 && pos < length && (text[pos] == five || text[pos] == ten)) {
+        pos++;
+    }
+    return pos;
+}
+
+/// Whether the `length` characters of `text` are a roman numeral written as
+/// docutils reads one, all in lower or all in upper case (`iv`, `XII`), and
+/// not a word made of the same letters (`did`, `civil`).
+static bool is_roman_numeral(const int32_t *text, size_t length)
+{
+    static const int32_t lower[3][3] = { { 'c', 'd', 'm' }, { 'x', 'l', 'c' }, { 'i', 'v', 'x' } };
+    static const int32_t upper[3][3] = { { 'C', 'D', 'M' }, { 'X', 'L', 'C' }, { 'I', 'V', 'X' } };
+
+    if (length == 0 || length > ROMAN_NUMERAL_MAX_LENGTH) {
+        return false;
+    }
+    const bool is_upper = is_numeric_bullet_roman_upper(text[0]);
+    const int32_t (*digits)[3] = is_upper ? upper : lower;
+    const int32_t thousand = is_upper ? 'M' : 'm';
+    size_t pos = 0;
+    while (pos < length && pos < 4 && text[pos] == thousand) {
+        pos++;
+    }
+    pos = match_roman_place(text, length, pos, digits[0]);
+    pos = match_roman_place(text, length, pos, digits[1]);
+    pos = match_roman_place(text, length, pos, digits[2]);
+    return pos == length;
+}
+
 /// Whether the rest of the line starts with an enumerator: `1.`, `(a)`,
 /// `#)` and the like, followed by whitespace. The enumerator is a number,
 /// a single letter, a roman numeral or `#`, so a word ending a sentence
@@ -505,18 +555,18 @@ static bool starts_with_enumerator(RSTScanner *scanner)
     if (scanner->lookahead == '(') {
         scanner->advance(scanner);
     }
+    int32_t text[ROMAN_NUMERAL_MAX_LENGTH];
     int length = 0;
     bool arabic = true;
-    bool roman_lower = true;
-    bool roman_upper = true;
     while (is_alphanumeric(scanner->lookahead) || scanner->lookahead == '#') {
         arabic = arabic && is_number(scanner->lookahead);
-        roman_lower = roman_lower && is_numeric_bullet_roman_lower(scanner->lookahead);
-        roman_upper = roman_upper && is_numeric_bullet_roman_upper(scanner->lookahead);
+        if (length < ROMAN_NUMERAL_MAX_LENGTH) {
+            text[length] = scanner->lookahead;
+        }
         scanner->advance(scanner);
         length++;
     }
-    if (length == 0 || (length > 1 && !arabic && !roman_lower && !roman_upper)) {
+    if (length == 0 || (length > 1 && !arabic && !is_roman_numeral(text, (size_t)length))) {
         return false;
     }
     if (scanner->lookahead != '.' && scanner->lookahead != ')') {
