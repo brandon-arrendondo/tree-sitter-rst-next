@@ -6,6 +6,13 @@ Changes before the fork are in the upstream project's history.
 
 ## [Unreleased]
 
+### Fixed
+
+- A comment whose text starts on the line below a bare `..` marker takes
+  its body's indent from the least indented line, as docutils does. A
+  later line indented less than the first no longer ends the comment and
+  leaves a syntax error.
+
 ## [0.3.0] - 2026-11-02
 
 The first release of tree-sitter-rst-next. Changes since the fork from the

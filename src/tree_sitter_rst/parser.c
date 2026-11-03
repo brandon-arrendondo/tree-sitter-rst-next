@@ -576,21 +576,21 @@ static bool parse_inner_list_element(RSTScanner *scanner, int consumed_chars, en
         // Set indent level to the first non-whitespace char
         int indent = scanner->back(scanner) + consumed_chars + get_indent_level(scanner);
 
-        // If it's an empty line and T_EXPLICIT_MARKUP_START, then it's an empty comment.
-        // Empty comments don't consume any following indented text.
+        // A marker alone on its line followed by a blank line is an empty
+        // comment, which doesn't consume any following indented text.
+        // Otherwise the body starts on the next line, and its indent is that
+        // of its least indented line.
         if (is_newline(scanner->lookahead) && token_type == T_EXPLICIT_MARKUP_START) {
-            bool is_empty = true;
             scanner->advance(scanner);
-            while (!is_newline(scanner->lookahead)) {
-                if (!is_space(scanner->lookahead)) {
-                    is_empty = false;
-                    break;
+            const int line_indent = get_indent_level(scanner);
+            if (is_newline(scanner->lookahead)) {
+                if (valid_symbols[T_EMPTY_COMMENT]) {
+                    lexer->result_symbol = T_EMPTY_COMMENT;
+                    return true;
                 }
-                scanner->advance(scanner);
             }
-            if (is_empty && valid_symbols[T_EMPTY_COMMENT]) {
-                lexer->result_symbol = T_EMPTY_COMMENT;
-                return true;
+            else {
+                indent = explicit_markup_body_indent(scanner, line_indent);
             }
         }
         else if (token_type == T_EXPLICIT_MARKUP_START) {

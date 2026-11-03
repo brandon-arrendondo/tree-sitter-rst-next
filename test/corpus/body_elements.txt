@@ -1484,3 +1484,23 @@ After.
       (content)))
   (comment)
   (paragraph))
+
+================================================================================
+A comment body below a bare marker is indented as far as its least indented line
+================================================================================
+
+..
+    deeper first
+ then less
+
+..
+
+   A block quote after an empty comment.
+
+--------------------------------------------------------------------------------
+
+(document
+  (comment)
+  (comment)
+  (block_quote
+    (paragraph)))
