@@ -91,8 +91,8 @@ repos:
       - id: moldy
         files: ^src/(scanner\.c|tree_sitter_rst/.*\.[ch])$
 
-  # Thresholds are the BRULE complexity limits (BRULE-025, -028, -031,
-  # -041, -077) used in our C projects. --baseline ratchets every metric
+  # Thresholds are the complexity limits used in our C projects.
+  # --baseline ratchets every metric
   # against the committed snapshot: a new function must meet the limits and
   # an existing one may not get worse. Regenerate with --write-baseline only
   # when a function is fixed or knots' counting changes.

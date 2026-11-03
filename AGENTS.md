@@ -68,11 +68,10 @@ and contributor documentation links to it. Do not keep a separate copy.
 - **Checks:** `invoke check` (every pre-commit hook on all files) and
   `invoke test` (the grammar's corpus tests and the Rust binding tests).
 - **Approval:** wait for the maintainer's explicit approval before each
-  outward-facing or irreversible step: pushing to any remote other than
-  the private working repository, making this repository public, pushing a
-  tag, publishing a package, rewriting shared history, or sending anything
-  to the upstream project (pull requests, issues, comments). An approval
-  covers one step and does not carry over.
+  outward-facing or irreversible step: pushing to a remote other than this
+  repository, pushing a tag, publishing a package, rewriting shared
+  history, or sending anything to the upstream project (pull requests,
+  issues, comments). An approval covers one step and does not carry over.
 - **Enforcement:** `scripts/check_commit_message.py` requires DCO and
   rejects AI trailers; `.claude/settings.json` and the trusted Codex
   `PreToolUse` guard block ordinary bypass commands. CI reruns all hooks,

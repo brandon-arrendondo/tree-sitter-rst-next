@@ -1,16 +1,14 @@
 # ADR-0001: A published artifact cites its sources, ships as a sanitized export, names its accountable reviewer, and discloses AI use
 
-**Status:** Proposed, 2026-11-02. Awaits the maintainer's review. The
-repository is private until its first release; this record must be
-accepted, and met at the repository's head, before it is made public.
+**Status:** Accepted, 2026-11-02 (Brandon Arrendondo). Proposed 2026-11-02.
 
 ## Context
 
-This repository started as a fork of an MIT-licensed grammar and will be
-published as our own project: the repository, and packages built from it. Our other
-public tools (aurora-lint, knots, Moldy) each hold the same four conditions
-for anything they publish. Making a private repository public is the point
-at which it must adopt them.
+This repository started as a fork of an MIT-licensed grammar and is
+published as our own project: the repository, and packages built from it.
+Our other public tools (aurora-lint, knots, Moldy) each hold the same four
+conditions for anything they publish, and this project adopted them before
+its repository was made public.
 
 A fork adds a question those tools do not have: much of the code was
 written by someone else, under their copyright, and our changes sit on top
@@ -74,8 +72,9 @@ quality and AI attribution.
   without code changes. Package metadata (authors, repository) describes
   this project, not the original.
 - Upstream's publishing workflow and funding link are not this project's
-  and are removed; a release workflow is added when the first release is
-  prepared.
+  and are removed. The maintainer publishes each package by hand after its
+  review; no workflow publishes on a tag. Packages go to crates.io first;
+  npm and PyPI follow later.
 - This is policy, not the export procedure. This ADR records no artifact as
   having completed legal review; automation cannot satisfy it.
 - Fix a leak found in published text at the head. Whether to rewrite Git

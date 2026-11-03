@@ -1,6 +1,6 @@
 # ADR-0002: The changelog tells users what changed; it is not a git log or a task list
 
-**Status:** Proposed, 2026-11-02. Awaits the maintainer's review.
+**Status:** Accepted, 2026-11-02 (Brandon Arrendondo). Proposed 2026-11-02.
 
 ## Context
 
@@ -43,8 +43,8 @@ in any other project.
 
 - Release notes require editorial review; automation can collect
   candidates but cannot decide that every change deserves an entry.
-- The Unreleased section starts from the upstream release the fork is
-  based on; earlier changes are in the upstream project's history.
+- The first section starts from the upstream commit the fork is based on;
+  earlier changes are in the upstream project's history.
 
 Origin: adaptation of Moldy ADR-0002, itself from knots ADR-0004 and
 aurora-lint ADR-0009, restated for a grammar's users.

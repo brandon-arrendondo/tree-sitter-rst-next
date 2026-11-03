@@ -11,11 +11,8 @@ permissions: {}
 jobs:
   zizmor:
     runs-on: ubuntu-latest
-    # While the repository is private, code scanning is unavailable, so the
-    # SARIF upload fails. zizmor reports in the log instead and still fails
-    # the job on a finding. At publication, set advanced-security back to
-    # true (or remove it) and restore `security-events: write`.
     permissions:
+      security-events: write
       contents: read
       actions: read
     steps:
@@ -25,6 +22,10 @@ jobs:
           persist-credentials: false
       - name: Run zizmor
         uses: zizmorcore/zizmor-action@5f14fd08f7cf1cb1609c1e344975f152c7ee938d # v0.5.6
+      # With the upload, zizmor exits 0 and leaves findings to code
+      # scanning. This second run reports in the log and fails the job on a
+      # finding.
+      - name: Fail on zizmor findings
+        uses: zizmorcore/zizmor-action@5f14fd08f7cf1cb1609c1e344975f152c7ee938d # v0.5.6
         with:
           advanced-security: false
-          annotations: true
