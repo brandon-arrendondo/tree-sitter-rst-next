@@ -12,12 +12,14 @@ edition = "2021"
 autoexamples = false
 
 build = "bindings/rust/build.rs"
+# Patterns start with / so that each matches only at the package root: an
+# unanchored "LICENSE" also matches node_modules/*/LICENSE.
 include = [
-  "bindings/rust/*",
-  "grammar.js",
-  "src/*",
-  "tree-sitter.json",
-  "LICENSE",
+  "/bindings/rust/*",
+  "/grammar.js",
+  "/src/*",
+  "/tree-sitter.json",
+  "/LICENSE",
 ]
 
 [lib]
