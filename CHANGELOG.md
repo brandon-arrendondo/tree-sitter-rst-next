@@ -8,6 +8,10 @@ Changes before the fork are in the upstream project's history.
 
 ### Fixed
 
+- The Rust crate rebuilds when a scanner source under
+  `src/tree_sitter_rst/` changes. Only `src/parser.c` and `src/scanner.c`
+  were watched, so a build from a local checkout or a path dependency
+  kept the old scanner after an edit to the files `scanner.c` includes.
 - A comment whose text starts on the line below a bare `..` marker takes
   its body's indent from the least indented line, as docutils does. A
   later line indented less than the first no longer ends the comment and

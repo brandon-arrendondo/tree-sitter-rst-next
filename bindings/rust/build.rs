@@ -17,5 +17,12 @@ fn main() {
         println!("cargo:rerun-if-changed={}", scanner_path.to_str().unwrap());
     }
 
+    // scanner.c #includes the scanner's own sources and headers from this
+    // directory; cargo watches every file under a directory it is given.
+    let scanner_dir = src_dir.join("tree_sitter_rst");
+    if scanner_dir.exists() {
+        println!("cargo:rerun-if-changed={}", scanner_dir.to_str().unwrap());
+    }
+
     c_config.compile("tree-sitter-rst");
 }
