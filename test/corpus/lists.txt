@@ -139,3 +139,42 @@ Some text:
       (body (paragraph (strong))))
     (list_item
       (body (paragraph (interpreted_text))))))
+
+================================================================================
+A marker alone on its line takes the indent of its body's least indented line
+================================================================================
+
+(10)
+   A body indented less than the marker is wide.
+
+1.
+   A body indented past the marker.
+
+*
+  A bullet's body.
+
+2.
+    deeper first
+   then less
+
+--------------------------------------------------------------------------------
+
+(document
+  (enumerated_list
+    (list_item
+      (body
+        (paragraph))))
+  (enumerated_list
+    (list_item
+      (body
+        (paragraph))))
+  (bullet_list
+    (list_item
+      (body
+        (paragraph))))
+  (enumerated_list
+    (list_item
+      (body
+        (block_quote
+          (paragraph))
+        (paragraph)))))

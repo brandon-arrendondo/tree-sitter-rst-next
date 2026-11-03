@@ -749,6 +749,29 @@ static int explicit_markup_indent(RSTScanner *scanner, int indent)
     return explicit_markup_body_indent(scanner, indent);
 }
 
+/// The body indent of a list item whose bullet or enumerator is alone on its
+/// line, `indent` being the column after the marker, or -1 when an
+/// enumerator is paragraph text. The lookahead is at the end of the line.
+///
+/// As in docutils, the body starts on the next line, and its indent is that
+/// of its least indented line, which may be less than the marker's width
+/// (`(10)` over a body indented by three). A next line not indented past the
+/// item's block leaves the body empty; before it, an enumerator is text
+/// unless that line is blank or starts with another enumerator.
+static int alone_marker_indent(RSTScanner *scanner, int indent, bool enumerator)
+{
+    scanner->advance(scanner);
+    const int line_indent = get_indent_level(scanner);
+    const bool blank = is_newline(scanner->lookahead);
+    const int back = scanner->back(scanner);
+    if (!blank && line_indent > back) {
+        return explicit_markup_body_indent(scanner, line_indent);
+    }
+    const bool is_text = enumerator && !blank && line_indent == back
+                         && !starts_with_enumerator(scanner);
+    return is_text ? -1 : indent;
+}
+
 static bool parse_inner_list_element(RSTScanner *scanner, int consumed_chars, enum TokenType token_type)
 {
     const bool *valid_symbols = scanner->valid_symbols;
@@ -772,7 +795,17 @@ static bool parse_inner_list_element(RSTScanner *scanner, int consumed_chars, en
                 return true;
             }
         }
-        if (token_type == T_NUMERIC_BULLET && !enumerator_starts_item(scanner, indent)) {
+        // A bullet or enumerator alone on its line.
+        const bool alone = (token_type == T_CHAR_BULLET || token_type == T_NUMERIC_BULLET)
+                           && is_newline(scanner->lookahead)
+                           && scanner->lookahead != CHAR_EOF;
+        if (alone) {
+            indent = alone_marker_indent(scanner, indent, token_type == T_NUMERIC_BULLET);
+        }
+        if (!alone && token_type == T_NUMERIC_BULLET && !enumerator_starts_item(scanner, indent)) {
+            indent = -1;
+        }
+        if (indent < 0) {
             return parse_text(scanner, false);
         }
 

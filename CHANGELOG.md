@@ -8,6 +8,11 @@ Changes before the fork are in the upstream project's history.
 
 ### Fixed
 
+- A bullet or enumerator alone on its line, with its body on the lines
+  below, takes the body's indent from its least indented line, as
+  docutils does. A body indented less than a wide enumerator (`(10)`
+  over three spaces) was left out of the item, and a body indented past
+  the marker was read as a block quote inside it.
 - The Rust crate rebuilds when a scanner source under
   `src/tree_sitter_rst/` changes. Only `src/parser.c` and `src/scanner.c`
   were watched, so a build from a local checkout or a path dependency

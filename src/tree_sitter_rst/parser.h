@@ -35,6 +35,7 @@ static bool parse_explict_markup_start(RSTScanner* scanner);
 static int adornment_run_length(RSTScanner* scanner);
 static bool enumerator_starts_item(RSTScanner* scanner, int indent);
 static int explicit_markup_indent(RSTScanner* scanner, int indent);
+static int alone_marker_indent(RSTScanner* scanner, int indent, bool enumerator);
 static bool parse_inner_list_element(RSTScanner* scanner, int consumed_chars, enum TokenType token_type);
 static bool parse_classifier_mark(RSTScanner* scanner);
 
