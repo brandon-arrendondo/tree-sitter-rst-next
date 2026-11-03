@@ -8,6 +8,10 @@ Changes before the fork are in the upstream project's history.
 
 ### Fixed
 
+- A word made of roman numeral letters (`did.`, `vivid.`, `civil.`) at the
+  start of the line after an enumerator no longer counts as the next
+  enumerator, so the two lines are one paragraph, as in docutils. A
+  roman enumerator must be a valid numeral (`iv.`, `XII.`), in one case.
 - The Rust crate rebuilds when a scanner source under
   `src/tree_sitter_rst/` changes. Only `src/parser.c` and `src/scanner.c`
   were watched, so a build from a local checkout or a path dependency

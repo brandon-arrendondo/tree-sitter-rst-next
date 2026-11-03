@@ -15,6 +15,9 @@
 #define IM_CITATION_REFERENCE 1u << 8u
 #define IM_REFERENCE 1u << 9u
 
+// The longest roman numeral an enumerator is checked as (`mmmmdccclxxxviii`).
+#define ROMAN_NUMERAL_MAX_LENGTH 16
+
 static bool starts_continuing_item(const RSTScanner* scanner);
 static bool next_line_indented_past(RSTScanner* scanner, int indent);
 static bool is_border_line(RSTScanner* scanner);
@@ -29,6 +32,8 @@ static bool fallback_adornment(RSTScanner* scanner, int32_t adornment, int adorn
 static bool parse_char_bullet(RSTScanner* scanner);
 static bool parse_inner_char_bullet(RSTScanner* scanner, int32_t bullet);
 static bool parse_numeric_bullet(RSTScanner* scanner);
+static size_t match_roman_place(const int32_t* text, size_t length, size_t pos, const int32_t digits[3]);
+static bool is_roman_numeral(const int32_t* text, size_t length);
 static bool starts_with_enumerator(RSTScanner* scanner);
 static bool parse_inner_numeric_bullet(RSTScanner* scanner, bool parenthesized);
 static bool parse_explict_markup_start(RSTScanner* scanner);

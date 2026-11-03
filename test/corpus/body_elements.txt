@@ -1657,3 +1657,51 @@ Another term
     (list_item
       (body
         (paragraph)))))
+
+================================================================================
+A word made of roman numeral letters is not an enumerator
+================================================================================
+
+1. The first line of a paragraph that
+did. Not end here.
+
+2. Another paragraph that is
+vivid. And goes on.
+
+3. A third that is
+CIVIL. Too.
+
+i. One
+ii. Two
+iii. Three
+iv. Four
+
+IX. Nine
+X. Ten
+
+--------------------------------------------------------------------------------
+
+(document
+  (paragraph)
+  (paragraph)
+  (paragraph)
+  (enumerated_list
+    (list_item
+      (body
+        (paragraph)))
+    (list_item
+      (body
+        (paragraph)))
+    (list_item
+      (body
+        (paragraph)))
+    (list_item
+      (body
+        (paragraph))))
+  (enumerated_list
+    (list_item
+      (body
+        (paragraph)))
+    (list_item
+      (body
+        (paragraph)))))
