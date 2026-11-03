@@ -1504,3 +1504,72 @@ A comment body below a bare marker is indented as far as its least indented line
   (comment)
   (block_quote
     (paragraph)))
+
+================================================================================
+A word ending in a period is not an enumerator
+================================================================================
+
+1. Provides detection of misspelled attribute
+assignments.  Only names in the list are allowed.
+
+i. One
+ii. Two
+
+A. One
+B. Two
+
+--------------------------------------------------------------------------------
+
+(document
+  (paragraph)
+  (enumerated_list
+    (list_item
+      (body
+        (paragraph)))
+    (list_item
+      (body
+        (paragraph))))
+  (enumerated_list
+    (list_item
+      (body
+        (paragraph)))
+    (list_item
+      (body
+        (paragraph)))))
+
+================================================================================
+An enumerator before an unindented line starting with punctuation is text
+================================================================================
+
+4. Improves speed.  Reading is faster with
+``__slots__`` (as measured).
+
+4. For deploying bootloader files and
+`RZ/V2L SMARC Evaluation Board Kit`_
+
+4. The ideal range is specified by
+'ideal-sample-range', and more.
+
+2. a
+#. b
+
+1. Title
+========
+
+--------------------------------------------------------------------------------
+
+(document
+  (paragraph
+    (literal))
+  (paragraph
+    (reference))
+  (paragraph)
+  (enumerated_list
+    (list_item
+      (body
+        (paragraph)))
+    (list_item
+      (body
+        (paragraph))))
+  (section
+    (title)))

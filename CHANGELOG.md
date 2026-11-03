@@ -12,6 +12,12 @@ Changes before the fork are in the upstream project's history.
   its body's indent from the least indented line, as docutils does. A
   later line indented less than the first no longer ends the comment and
   leaves a syntax error.
+- A paragraph that starts with an enumerator (`1.`) and continues on an
+  unindented line is a paragraph, as in docutils, also when that line
+  starts with a word and a period (`assignments.`) or with punctuation
+  that doesn't underline it (``` ``literal`` ```, `` `link`_ ``). The word
+  was taken for the next enumerator, and the punctuation for a title
+  underline, and the paragraph was read as a list.
 
 ## [0.3.0] - 2026-11-02
 

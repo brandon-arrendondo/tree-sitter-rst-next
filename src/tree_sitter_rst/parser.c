@@ -419,18 +419,29 @@ static bool parse_numeric_bullet(RSTScanner *scanner)
 }
 
 /// Whether the rest of the line starts with an enumerator: `1.`, `(a)`,
-/// `#)` and the like, followed by whitespace. Consumes what it reads.
+/// `#)` and the like, followed by whitespace. The enumerator is a number,
+/// a single letter, a roman numeral or `#`, so a word ending a sentence
+/// (`application.`) is not one. Consumes what it reads.
 static bool starts_with_enumerator(RSTScanner *scanner)
 {
     if (scanner->lookahead == '(') {
         scanner->advance(scanner);
     }
     int length = 0;
+    bool arabic = true;
+    bool roman_lower = true;
+    bool roman_upper = true;
     while (is_alphanumeric(scanner->lookahead) || scanner->lookahead == '#') {
+        arabic = arabic && is_number(scanner->lookahead);
+        roman_lower = roman_lower && is_numeric_bullet_roman_lower(scanner->lookahead);
+        roman_upper = roman_upper && is_numeric_bullet_roman_upper(scanner->lookahead);
         scanner->advance(scanner);
         length++;
     }
-    if (length == 0 || (scanner->lookahead != '.' && scanner->lookahead != ')')) {
+    if (length == 0 || (length > 1 && !arabic && !roman_lower && !roman_upper)) {
+        return false;
+    }
+    if (scanner->lookahead != '.' && scanner->lookahead != ')') {
         return false;
     }
     scanner->advance(scanner);
@@ -560,6 +571,106 @@ static int explicit_markup_body_indent(RSTScanner *scanner, int indent)
     }
     return indent;
 }
+/// The length of the run of one adornment character that makes up the rest
+/// of the line: 0 if the line doesn't start with an adornment character, -1
+/// if another character follows the run. Consumes what it reads.
+static int adornment_run_length(RSTScanner *scanner)
+{
+    const int32_t adornment = scanner->lookahead;
+
+    if (!is_adornment_char(adornment)) {
+        return 0;
+    }
+    int length = 0;
+    while (!is_newline(scanner->lookahead)) {
+        if (scanner->lookahead != adornment) {
+            return -1;
+        }
+        length++;
+        scanner->advance(scanner);
+    }
+    return length;
+}
+
+/// Whether the enumerator just read, with the rest of its line `indent`
+/// columns in, starts a list item. The lookahead is after the enumerator.
+///
+/// As in docutils' `is_enumerated_list_item`, it does if the next line is
+/// blank, indented past the item's block, outside that block, or starts with
+/// another enumerator (docutils wants the next ordinal; any enumerator is
+/// accepted here). Otherwise the enumerator is paragraph text ("1. text\ntext").
+/// It is also text when the next line underlines the line as a title
+/// (https://github.com/stsewd/tree-sitter-rst/issues/30): a run of one
+/// adornment character at least as long as the line.
+static bool enumerator_starts_item(RSTScanner *scanner, int indent)
+{
+    int line_length = indent;
+
+    while (!is_newline(scanner->lookahead)) {
+        line_length++;
+        scanner->advance(scanner);
+    }
+    scanner->advance(scanner);
+
+    const int32_t first = scanner->lookahead;
+    bool at_block_column = false;
+    bool indented = false;
+    if (!is_newline(first)) {
+        const int next_indent = get_indent_level(scanner);
+        at_block_column = !is_newline(scanner->lookahead) && next_indent == scanner->back(scanner);
+        // `(` and `#` start enumerators, never underlines.
+        const bool may_be_underline = next_indent == 0 && is_adornment_char(first)
+                                      && first != '(' && first != '#';
+        if (at_block_column && !may_be_underline && !starts_with_enumerator(scanner)) {
+            return false;
+        }
+        indented = next_indent > 0;
+    }
+    if (indented) {
+        return true;
+    }
+
+    // Not a title's underline, and not a line at the block's column that
+    // starts with punctuation but isn't an underline (it continues the
+    // paragraph).
+    const int underline = adornment_run_length(scanner);
+    return !(underline > 0 && underline >= line_length) && !(at_block_column && underline < 0);
+}
+
+/// The body indent of an explicit markup block whose marker was just read,
+/// with the rest of its line `indent` columns in, or -1 for an empty comment.
+///
+/// A marker alone on its line followed by a blank line is an empty comment,
+/// which doesn't consume any following indented text. Otherwise the body's
+/// indent is that of its least indented line.
+static int explicit_markup_indent(RSTScanner *scanner, int indent)
+{
+    if (is_newline(scanner->lookahead)) {
+        scanner->advance(scanner);
+        const int line_indent = get_indent_level(scanner);
+        if (is_newline(scanner->lookahead)) {
+            return scanner->valid_symbols[T_EMPTY_COMMENT] ? -1 : indent;
+        }
+        return explicit_markup_body_indent(scanner, line_indent);
+    }
+
+    // Go to the next line.
+    while (!is_newline(scanner->lookahead)) {
+        scanner->advance(scanner);
+    }
+    scanner->advance(scanner);
+
+    // The first non-empty line after the marker starts the body.
+    while (true) {
+        indent = get_indent_level(scanner);
+        if (!is_newline(scanner->lookahead) || scanner->lookahead == CHAR_EOF) {
+            break;
+        }
+        scanner->advance(scanner);
+    }
+    return explicit_markup_body_indent(scanner, indent);
+}
+
 static bool parse_inner_list_element(RSTScanner *scanner, int consumed_chars, enum TokenType token_type)
 {
     const bool *valid_symbols = scanner->valid_symbols;
@@ -576,93 +687,15 @@ static bool parse_inner_list_element(RSTScanner *scanner, int consumed_chars, en
         // Set indent level to the first non-whitespace char
         int indent = scanner->back(scanner) + consumed_chars + get_indent_level(scanner);
 
-        // A marker alone on its line followed by a blank line is an empty
-        // comment, which doesn't consume any following indented text.
-        // Otherwise the body starts on the next line, and its indent is that
-        // of its least indented line.
-        if (is_newline(scanner->lookahead) && token_type == T_EXPLICIT_MARKUP_START) {
-            scanner->advance(scanner);
-            const int line_indent = get_indent_level(scanner);
-            if (is_newline(scanner->lookahead)) {
-                if (valid_symbols[T_EMPTY_COMMENT]) {
-                    lexer->result_symbol = T_EMPTY_COMMENT;
-                    return true;
-                }
-            }
-            else {
-                indent = explicit_markup_body_indent(scanner, line_indent);
+        if (token_type == T_EXPLICIT_MARKUP_START) {
+            indent = explicit_markup_indent(scanner, indent);
+            if (indent < 0) {
+                lexer->result_symbol = T_EMPTY_COMMENT;
+                return true;
             }
         }
-        else if (token_type == T_EXPLICIT_MARKUP_START) {
-            // Go to the next line.
-            while (!is_newline(scanner->lookahead)) {
-                scanner->advance(scanner);
-            }
-            scanner->advance(scanner);
-
-            // The first non-empty line after the marker
-            // determines the indentation of the body.
-            while (true) {
-                indent = get_indent_level(scanner);
-                if (!is_newline(scanner->lookahead) || scanner->lookahead == CHAR_EOF) {
-                    break;
-                }
-                scanner->advance(scanner);
-            }
-            indent = explicit_markup_body_indent(scanner, indent);
-        }
-        else if (token_type == T_NUMERIC_BULLET) {
-            // Check if the next line is an underline.
-            // In that case, the list item is just a normal text from a title,
-            // the underline must be at least as long as the title
-            // https://github.com/stsewd/tree-sitter-rst/issues/30.
-
-            // Go to the next line.
-            consumed_chars = indent;
-            while (!is_newline(scanner->lookahead)) {
-                consumed_chars++;
-                scanner->advance(scanner);
-            }
-            scanner->advance(scanner);
-
-            // An enumerator starts a list item only if the next line is blank,
-            // indented past the item's block, outside that block, or starts with
-            // another enumerator (docutils' `is_enumerated_list_item`, which wants
-            // the next ordinal; any enumerator is accepted here). Otherwise the
-            // enumerator is ordinary paragraph text ("1. text\ntext").
-            int32_t first = scanner->lookahead;
-            if (!is_newline(first)) {
-                int next_indent = get_indent_level(scanner);
-                if (!is_newline(scanner->lookahead) && next_indent == scanner->back(scanner)
-                    && !(next_indent == 0 && is_adornment_char(first))
-                    && !starts_with_enumerator(scanner)) {
-                    return parse_text(scanner, false);
-                }
-                if (next_indent > 0) {
-                    scanner->push(scanner, indent);
-                    return true;
-                }
-            }
-
-            // Check if that line is a valid underline.
-            int32_t adornment = scanner->lookahead;
-            int adornment_length = 0;
-            if (is_adornment_char(adornment)) {
-                while (true) {
-                    if (is_newline(scanner->lookahead)) {
-                        break;
-                    }
-                    if (scanner->lookahead != adornment) {
-                        adornment_length = -1;
-                        break;
-                    }
-                    adornment_length++;
-                    scanner->advance(scanner);
-                }
-            }
-            if (adornment_length > 0 && adornment_length >= consumed_chars) {
-                return parse_text(scanner, false);
-            }
+        if (token_type == T_NUMERIC_BULLET && !enumerator_starts_item(scanner, indent)) {
+            return parse_text(scanner, false);
         }
 
         scanner->push(scanner, indent);
