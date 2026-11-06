@@ -136,3 +136,17 @@ pip install docutils
 rst2html5 test.rst out.html
 xdg-open out.html
 ```
+
+## Dependency updates
+
+Dependabot opens one grouped pull request per ecosystem each week (GitHub
+Actions, npm, Cargo, pip). Its commits carry no DCO sign-off, so the
+commit-policy check fails on them and they are not merged as they stand.
+A maintainer reviews each update, re-lands it on `main` as a signed commit
+(`git commit -s`) with the full checks run, and the bot's pull request
+then closes as superseded.
+
+A tree-sitter CLI update changes three pins together: `tree-sitter-cli` in
+`package.json` and `package-lock.json`, and `tree-sitter-ref` in
+`.github/workflows/agent-policy.yml`. Regenerate `src/` with the new CLI
+and commit the result in the same change.

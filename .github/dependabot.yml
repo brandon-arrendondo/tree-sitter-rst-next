@@ -1,4 +1,7 @@
 version: 2
+# One grouped pull request per ecosystem per week. A bot commit carries no
+# DCO sign-off, so these pull requests are not merged as they stand: each
+# update is re-landed on main as a signed commit (CONTRIBUTING.md).
 updates:
   - package-ecosystem: "github-actions"
     directory: "/"
@@ -6,21 +9,33 @@ updates:
       interval: "weekly"
     cooldown:
       default-days: 7
+    groups:
+      github-actions:
+        patterns: ["*"]
   - package-ecosystem: "npm"
     directory: "/"
     schedule:
       interval: "weekly"
     cooldown:
       default-days: 7
+    groups:
+      npm:
+        patterns: ["*"]
   - package-ecosystem: "cargo"
     directory: "/"
     schedule:
       interval: "weekly"
     cooldown:
       default-days: 7
+    groups:
+      cargo:
+        patterns: ["*"]
   - package-ecosystem: "pip"
     directory: "/"
     schedule:
       interval: "weekly"
     cooldown:
       default-days: 7
+    groups:
+      pip:
+        patterns: ["*"]
